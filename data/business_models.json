@@ -5,7 +5,29 @@
     "description": "Recurring-access software or analytics platform with tiered pricing.",
     "tags": ["software", "recurring", "low_capex", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 2,
+    "capital_requirement": "Low",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Monthly or annual subscriptions",
+      "Premium feature upgrades",
+      "Enterprise plans"
+    ],
+    "use_cases": [
+      "Analytics dashboards for energy systems",
+      "Portfolio management tools",
+      "Innovation pipeline tracking platforms"
+    ],
+    "examples": [
+      "Salesforce",
+      "HubSpot",
+      "Notion"
+    ],
+    "risks": [
+      "High competition in SaaS markets",
+      "Customer churn if value is not clear",
+      "Ongoing need for product updates and support"
+    ]
   },
   {
     "id": "BM02",
@@ -13,7 +35,29 @@
     "description": "Offer a free basic version and convert premium users through added features.",
     "tags": ["software", "recurring", "growth", "digital"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Premium subscriptions",
+      "Feature unlocks",
+      "Add-on modules"
+    ],
+    "use_cases": [
+      "Productivity apps for researchers",
+      "Developer tools",
+      "Innovation collaboration platforms"
+    ],
+    "examples": [
+      "Canva",
+      "Slack (free tier → paid)",
+      "Dropbox"
+    ],
+    "risks": [
+      "Large free user base with low conversion",
+      "High infrastructure cost to support free users",
+      "Complex pricing and packaging decisions"
+    ]
   },
   {
     "id": "BM03",
@@ -21,7 +65,29 @@
     "description": "Connect buyers and sellers through a digital marketplace earning commissions.",
     "tags": ["platform", "transaction", "digital", "B2C", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Transaction commissions",
+      "Listing fees",
+      "Promoted placement or ads"
+    ],
+    "use_cases": [
+      "Marketplace for energy services or installers",
+      "Innovation challenge platforms",
+      "B2B marketplace for lab services or testing"
+    ],
+    "examples": [
+      "Amazon Marketplace",
+      "Upwork",
+      "Airbnb"
+    ],
+    "risks": [
+      "Chicken-and-egg problem for supply and demand",
+      "Regulatory complexity in certain sectors",
+      "Platform disintermediation once relationships are formed"
+    ]
   },
   {
     "id": "BM04",
@@ -29,7 +95,29 @@
     "description": "Aggregate, enrich, and sell datasets or insights via subscription or API.",
     "tags": ["data", "recurring", "AI", "digital"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Data subscriptions",
+      "Tiered API access",
+      "Custom data reports"
+    ],
+    "use_cases": [
+      "Energy consumption and grid data feeds",
+      "Carbon credit and emissions datasets",
+      "Market intelligence feeds for investors"
+    ],
+    "examples": [
+      "Bloomberg Terminal (data layer)",
+      "Climate data APIs",
+      "Financial market data providers"
+    ],
+    "risks": [
+      "Data quality and accuracy concerns",
+      "Regulatory and privacy constraints",
+      "Customer lock-in risk if formats are proprietary"
+    ]
   },
   {
     "id": "BM05",
@@ -37,7 +125,29 @@
     "description": "Expose core functionality through APIs and charge per call or tier.",
     "tags": ["software", "usage", "developer", "digital"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 3,
+    "capital_requirement": "Low",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Pay-per-use API calls",
+      "Tiered API plans",
+      "Enterprise integration fees"
+    ],
+    "use_cases": [
+      "Embedding analytics or AI models into partner products",
+      "Access to simulation or optimisation engines",
+      "Carbon accounting or registry APIs"
+    ],
+    "examples": [
+      "Stripe",
+      "Twilio",
+      "OpenAI API"
+    ],
+    "risks": [
+      "Dependency on external developers for adoption",
+      "Complexity of documentation and support",
+      "Cost spikes if infrastructure isn’t optimised"
+    ]
   },
   {
     "id": "BM06",
@@ -45,7 +155,28 @@
     "description": "Offer physical equipment bundled with monitoring and recurring service fees.",
     "tags": ["hardware", "recurring", "B2B", "IoT"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "High",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Monthly or annual equipment subscriptions",
+      "Installation and onboarding fees",
+      "Maintenance and service contracts"
+    ],
+    "use_cases": [
+      "Battery storage systems with remote monitoring",
+      "EV chargers with service bundles",
+      "Industrial equipment with uptime guarantees"
+    ],
+    "examples": [
+      "Philips lighting-as-a-service",
+      "Rolls-Royce power-by-the-hour (conceptually similar)"
+    ],
+    "risks": [
+      "High upfront capital cost",
+      "Asset performance and reliability risk",
+      "Complex contract management and credit risk"
+    ]
   },
   {
     "id": "BM07",
@@ -53,7 +184,27 @@
     "description": "Lease equipment or assets instead of selling outright.",
     "tags": ["leasing", "recurring", "high_capex", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "High",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Monthly lease payments",
+      "End-of-lease upgrade or buyout fees"
+    ],
+    "use_cases": [
+      "Leasing industrial machinery",
+      "Leasing EVs or fleets",
+      "Leasing specialised lab equipment"
+    ],
+    "examples": [
+      "Vehicle leasing companies",
+      "Equipment leasing in manufacturing"
+    ],
+    "risks": [
+      "Asset depreciation risk",
+      "Default and non-payment risk",
+      "Residual value uncertainty at lease end"
+    ]
   },
   {
     "id": "BM08",
@@ -61,7 +212,28 @@
     "description": "Charge customers per unit consumed (e.g., kWh, hour, transaction).",
     "tags": ["usage", "recurring", "services"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Per-unit consumption fees",
+      "Tiered usage plans",
+      "Overage charges for high usage"
+    ],
+    "use_cases": [
+      "Energy billing per kWh",
+      "Cloud computing per CPU-hour",
+      "API calls or data usage"
+    ],
+    "examples": [
+      "AWS pay-as-you-go",
+      "Utility billing models"
+    ],
+    "risks": [
+      "Revenue volatility based on usage patterns",
+      "Customer confusion if pricing is unclear",
+      "Complex metering and monitoring requirements"
+    ]
   },
   {
     "id": "BM09",
@@ -69,7 +241,29 @@
     "description": "Replicate a proven model through franchisees under a unified brand.",
     "tags": ["IP", "B2C", "distribution", "scaling"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Franchise fees",
+      "Ongoing royalties",
+      "Supply or logistics margins"
+    ],
+    "use_cases": [
+      "Retail or food chains",
+      "Service businesses with strong brand playbooks",
+      "Training or education centres"
+    ],
+    "examples": [
+      "McDonald’s",
+      "KFC",
+      "Many global retail franchises"
+    ],
+    "risks": [
+      "Quality control across franchisees",
+      "Brand damage if a franchise underperforms",
+      "Complex franchise regulation and compliance"
+    ]
   },
   {
     "id": "BM10",
@@ -77,7 +271,28 @@
     "description": "License intellectual property to manufacturers or integrators.",
     "tags": ["IP", "enterprise", "low_capex", "royalties"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "Low",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Upfront license fees",
+      "Ongoing royalties on sales",
+      "Milestone payments for performance"
+    ],
+    "use_cases": [
+      "University IP licensing to industry",
+      "Battery chemistry or materials IP",
+      "Software algorithms embedded in OEM systems"
+    ],
+    "examples": [
+      "University tech transfer deals",
+      "Cross-licensing between large OEMs"
+    ],
+    "risks": [
+      "Dependence on licensee’s ability to commercialise",
+      "Complex IP negotiation and enforcement",
+      "Revenue uncertainty tied to licensee’s success"
+    ]
   },
   {
     "id": "BM11",
@@ -85,7 +300,28 @@
     "description": "Start with bespoke services and evolve to a repeatable product.",
     "tags": ["services", "learning", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "Low",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Consulting fees",
+      "Implementation projects",
+      "Later, recurring product subscriptions"
+    ],
+    "use_cases": [
+      "Innovation strategy consulting that becomes a toolkit",
+      "Carbon advisory that becomes a software platform",
+      "EV fleet advisory evolving into a management product"
+    ],
+    "examples": [
+      "Agencies that turned tools into SaaS products",
+      "Boutique consultancies spinning off software"
+    ],
+    "risks": [
+      "Difficulty transitioning from custom to standardised offers",
+      "Consulting can crowd out product focus",
+      "Scaling depends on codifying tacit knowledge"
+    ]
   },
   {
     "id": "BM12",
@@ -93,7 +329,28 @@
     "description": "Operate and maintain client infrastructure for a monthly fee.",
     "tags": ["services", "recurring", "B2B", "operations"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Monthly management fees",
+      "On-site support retainers",
+      "Performance or uptime bonuses"
+    ],
+    "use_cases": [
+      "Managing microgrid or energy systems",
+      "Managed cybersecurity or IT services",
+      "Operating EV charging infrastructure"
+    ],
+    "examples": [
+      "Managed IT service providers",
+      "Energy service companies managing plants"
+    ],
+    "risks": [
+      "Operational complexity across multiple clients",
+      "High SLA expectations and penalties",
+      "Talent and skills bottlenecks"
+    ]
   },
   {
     "id": "BM13",
@@ -101,7 +358,27 @@
     "description": "Charge customers only when measurable results are achieved.",
     "tags": ["impact", "innovation", "B2B", "performance"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Performance-based fees",
+      "Shared savings agreements"
+    ],
+    "use_cases": [
+      "Energy efficiency upgrades",
+      "Carbon reduction projects",
+      "Process optimisation in factories"
+    ],
+    "examples": [
+      "ESCO-style shared savings projects",
+      "Outcome-based consulting agreements"
+    ],
+    "risks": [
+      "Complex measurement and verification",
+      "Revenue uncertainty if outcomes are delayed",
+      "Disputes over baselines and external factors"
+    ]
   },
   {
     "id": "BM14",
@@ -109,7 +386,29 @@
     "description": "Leverage community input or labor for innovation or microtasks.",
     "tags": ["platform", "innovation", "crowd", "digital"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Platform fees from clients",
+      "Access or subscription fees",
+      "Success-based rewards or commissions"
+    ],
+    "use_cases": [
+      "Open innovation challenges",
+      "Data labelling for AI",
+      "Idea crowdsourcing for public problems"
+    ],
+    "examples": [
+      "Kaggle (competitions)",
+      "Mechanical Turk",
+      "Crowdsourced design platforms"
+    ],
+    "risks": [
+      "Quality control of crowd contributions",
+      "Ethical concerns around low-paid microtasks",
+      "Platform trust and IP ownership issues"
+    ]
   },
   {
     "id": "BM15",
@@ -117,7 +416,28 @@
     "description": "Provide core infrastructure allowing partners to co-create value.",
     "tags": ["platform", "B2B", "partnerships", "innovation"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 5,
+    "capital_requirement": "High",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Membership or platform fees",
+      "Transaction commissions in the ecosystem",
+      "Premium partner services"
+    ],
+    "use_cases": [
+      "Regional innovation ecosystems",
+      "EV charging and mobility ecosystems",
+      "Climate tech collaboration platforms"
+    ],
+    "examples": [
+      "App stores (Apple, Google)",
+      "Large B2B ecosystems (e.g., Salesforce AppExchange)"
+    ],
+    "risks": [
+      "Requires critical mass of partners",
+      "Complex stakeholder management",
+      "High initial investment for uncertain payoff"
+    ]
   },
   {
     "id": "BM16",
@@ -125,7 +445,28 @@
     "description": "Design for reuse, refurbishment, and recycling to capture residual value.",
     "tags": ["sustainability", "manufacturing", "impact", "green"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Sales of refurbished products",
+      "Materials recovery and resale",
+      "Take-back service contracts"
+    ],
+    "use_cases": [
+      "Battery second-life and recycling",
+      "Electronics refurbishing",
+      "Circular packaging systems"
+    ],
+    "examples": [
+      "Patagonia repair and reuse programmes",
+      "Circular furniture or electronics brands"
+    ],
+    "risks": [
+      "Complex reverse logistics",
+      "Regulation for waste and recycling",
+      "Uncertain quality of returned products"
+    ]
   },
   {
     "id": "BM17",
@@ -133,7 +474,28 @@
     "description": "Earn or sell verified carbon offsets through sustainability projects.",
     "tags": ["impact", "green", "finance", "innovation"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Sale of carbon credits",
+      "Premium pricing for co-benefits",
+      "Long-term offtake agreements"
+    ],
+    "use_cases": [
+      "Reforestation or land restoration projects",
+      "Renewable energy or efficiency projects",
+      "Industrial process emission reductions"
+    ],
+    "examples": [
+      "Verified carbon standard projects",
+      "Gold Standard climate projects"
+    ],
+    "risks": [
+      "Policy and standard changes in carbon markets",
+      "Additionality and integrity challenges",
+      "Price volatility and reputational risk"
+    ]
   },
   {
     "id": "BM18",
@@ -141,7 +503,28 @@
     "description": "Locally owned venture reinvesting profits into community development.",
     "tags": ["impact", "local", "cooperative"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Product or service sales",
+      "Membership contributions",
+      "Local grants or philanthropy"
+    ],
+    "use_cases": [
+      "Community-owned renewable energy",
+      "Local mobility or transport services",
+      "Waste-to-value initiatives"
+    ],
+    "examples": [
+      "Community wind or solar projects",
+      "Local co-op enterprises"
+    ],
+    "risks": [
+      "Governance complexity among members",
+      "Limited access to growth capital",
+      "Balancing social goals with financial sustainability"
+    ]
   },
   {
     "id": "BM19",
@@ -149,7 +532,27 @@
     "description": "Combine early research grants with later-stage revenue sharing.",
     "tags": ["early_stage", "finance", "hybrid"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Revenue share from supported ventures",
+      "Equity or royalties from successful projects"
+    ],
+    "use_cases": [
+      "Public agencies supporting deep tech",
+      "Innovation funds bridging lab-to-market gaps",
+      "Technology transfer and commercialisation programmes"
+    ],
+    "examples": [
+      "Public innovation agencies with royalty models",
+      "Hybrid grant–equity innovation funds"
+    ],
+    "risks": [
+      "Long time horizons before revenue materialises",
+      "Portfolio concentration risk",
+      "Measurement of fair revenue share"
+    ]
   },
   {
     "id": "BM20",
@@ -157,7 +560,29 @@
     "description": "Deliver curated products on a recurring subscription basis.",
     "tags": ["B2C", "recurring", "retail"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 2,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Monthly or quarterly box subscriptions",
+      "Upsell of individual products",
+      "Limited edition or premium kits"
+    ],
+    "use_cases": [
+      "STEM or energy education kits",
+      "Health, food or lifestyle boxes",
+      "Maker or prototyping kits"
+    ],
+    "examples": [
+      "HelloFresh",
+      "KiwiCo",
+      "Beauty subscription boxes"
+    ],
+    "risks": [
+      "Logistics and supply chain complexity",
+      "High churn if curation is weak",
+      "Inventory and forecasting challenges"
+    ]
   },
   {
     "id": "BM21",
@@ -165,7 +590,27 @@
     "description": "Produce goods for other brands to repackage and sell.",
     "tags": ["manufacturing", "B2B", "low_margin"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "High",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Manufacturing contracts",
+      "Volume-based production fees"
+    ],
+    "use_cases": [
+      "Battery pack manufacturing for OEM brands",
+      "Electronics made for larger labels",
+      "Commodity components for multiple customers"
+    ],
+    "examples": [
+      "Contract manufacturers in electronics",
+      "White-label consumer goods plants"
+    ],
+    "risks": [
+      "Margin pressure from buyers",
+      "Dependence on a small number of big clients",
+      "Capex and utilisation risk for factories"
+    ]
   },
   {
     "id": "BM22",
@@ -173,7 +618,28 @@
     "description": "Integrate products into other manufacturers’ systems.",
     "tags": ["manufacturing", "B2B", "infrastructure"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "High",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Component sales to integrators",
+      "Long-term supply contracts",
+      "Customisation fees"
+    ],
+    "use_cases": [
+      "Supplying battery modules into EV OEMs",
+      "Sensors integrated into industrial systems",
+      "Power electronics for energy OEMs"
+    ],
+    "examples": [
+      "Tier-1 automotive suppliers",
+      "Industrial component OEMs"
+    ],
+    "risks": [
+      "Long and complex qualification cycles",
+      "Dependence on large OEM customers",
+      "Price negotiation pressure"
+    ]
   },
   {
     "id": "BM23",
@@ -181,7 +647,28 @@
     "description": "Offer maintenance, upgrades, and consumables post-sale.",
     "tags": ["services", "recurring", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Maintenance contracts",
+      "Spare parts and consumables",
+      "Upgrades and retrofits"
+    ],
+    "use_cases": [
+      "Battery replacement or refurbishment services",
+      "Maintenance of industrial or energy equipment",
+      "EV fleet service contracts"
+    ],
+    "examples": [
+      "OEM service divisions",
+      "Independent industrial service companies"
+    ],
+    "risks": [
+      "Need for broad field service capability",
+      "Inventory management for spare parts",
+      "Potential conflict with OEM warranties"
+    ]
   },
   {
     "id": "BM24",
@@ -189,7 +676,28 @@
     "description": "Free core offering, monetized through premium add-ons and support.",
     "tags": ["software", "innovation", "community", "recurring"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 3,
+    "capital_requirement": "Low",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Premium hosted versions",
+      "Enterprise support contracts",
+      "Custom development and integrations"
+    ],
+    "use_cases": [
+      "Developer tools and frameworks",
+      "Research software and simulation tools",
+      "Infrastructure tools for energy or climate analytics"
+    ],
+    "examples": [
+      "Red Hat (Linux model)",
+      "Elastic (search, prior to licensing changes)"
+    ],
+    "risks": [
+      "Competition from pure open-source forks",
+      "Confusion about what is free vs paid",
+      "Community expectations vs commercial needs"
+    ]
   },
   {
     "id": "BM25",
@@ -197,16 +705,59 @@
     "description": "Provide development and deployment infrastructure as a service.",
     "tags": ["software", "recurring", "developer", "cloud"],
     "maturity_level": "dominant",
-    "success_score": 0.90
-  }
-,
-    {
+    "difficulty": 4,
+    "capital_requirement": "High",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Usage-based platform fees",
+      "Premium enterprise plans",
+      "Add-on services such as monitoring or security"
+    ],
+    "use_cases": [
+      "Hosting energy or carbon applications",
+      "Developer platforms for AI or analytics tools",
+      "Microservice deployment platforms"
+    ],
+    "examples": [
+      "Heroku",
+      "AWS Elastic Beanstalk",
+      "Azure App Service"
+    ],
+    "risks": [
+      "Significant infrastructure complexity",
+      "Competing with hyperscale cloud providers",
+      "Need to attract and retain developer communities"
+    ]
+  },
+  {
     "id": "BM26",
     "name": "Product-Led Growth",
     "description": "Drive adoption through self-service product experience before sales.",
     "tags": ["software", "growth", "digital"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Self-serve subscription upgrades",
+      "Team or enterprise expansions",
+      "In-product purchases"
+    ],
+    "use_cases": [
+      "Collaboration tools",
+      "Developer tools and APIs",
+      "Productivity and workflow apps"
+    ],
+    "examples": [
+      "Slack",
+      "Zoom",
+      "Figma"
+    ],
+    "risks": [
+      "Requires excellent onboarding and UX",
+      "Product complexity can block self-serve growth",
+      "Need strong analytics and growth experimentation"
+    ]
   },
   {
     "id": "BM27",
@@ -214,7 +765,28 @@
     "description": "Collaborate across partners and startups for shared R&D outcomes.",
     "tags": ["innovation", "early_stage", "B2B"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Membership or participation fees",
+      "Shared IP licensing revenue",
+      "Facilitation and programme management fees"
+    ],
+    "use_cases": [
+      "Sector-specific innovation networks",
+      "Joint R&D on hydrogen, batteries or EVs",
+      "Consortia around climate challenges"
+    ],
+    "examples": [
+      "EIT-style innovation communities",
+      "Regional clusters and hubs"
+    ],
+    "risks": [
+      "Complex IP and benefit-sharing agreements",
+      "Unequal contribution from partners",
+      "Slow decision-making in large groups"
+    ]
   },
   {
     "id": "BM28",
@@ -222,7 +794,28 @@
     "description": "Form a new company to commercialize internal research results.",
     "tags": ["early_stage", "innovation", "IP"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "High",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Equity value growth",
+      "Licensing or royalty flows to the originator",
+      "Exit events (trade sale, IPO)"
+    ],
+    "use_cases": [
+      "University or public research turning into startups",
+      "Corporate labs spinning out deep tech ventures",
+      "IP-rich energy or climate technologies"
+    ],
+    "examples": [
+      "University spinoffs (e.g., Oxford, MIT portfolios)",
+      "Corporate venture spin-outs"
+    ],
+    "risks": [
+      "High technical and market risk",
+      "Governance challenges between parent and spin-out",
+      "Funding and talent attraction challenges"
+    ]
   },
   {
     "id": "BM29",
@@ -230,7 +823,28 @@
     "description": "License, incubate, and spin out institutional research IP.",
     "tags": ["IP", "research", "university", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Upfront license fees",
+      "Royalties from licensees",
+      "Equity holdings in spin-out ventures"
+    ],
+    "use_cases": [
+      "Universities managing research commercialisation",
+      "Public labs translating IP to industry",
+      "Hospitals or research institutes licensing clinical IP"
+    ],
+    "examples": [
+      "University tech transfer offices worldwide",
+      "Specialised IP commercialisation entities"
+    ],
+    "risks": [
+      "Long lag between research and revenue",
+      "Portfolio hit-driven dynamics",
+      "Balancing academic and commercial incentives"
+    ]
   },
   {
     "id": "BM30",
@@ -238,7 +852,29 @@
     "description": "Support multiple startups in exchange for equity or fees.",
     "tags": ["innovation", "finance", "services", "ecosystem"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Equity stakes in startups",
+      "Programme fees or sponsorships",
+      "Follow-on fund management fees"
+    ],
+    "use_cases": [
+      "Climate tech or energy startup accelerators",
+      "University incubators",
+      "Corporate innovation accelerators"
+    ],
+    "examples": [
+      "Y Combinator",
+      "Techstars",
+      "Sector-specific accelerators"
+    ],
+    "risks": [
+      "Portfolio performance uncertainty",
+      "High support intensity per startup",
+      "Reputation risk if quality is low"
+    ]
   },
   {
     "id": "BM31",
@@ -246,7 +882,28 @@
     "description": "Offer AI or machine-learning models via subscription or API access.",
     "tags": ["AI", "software", "recurring", "cloud"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Usage-based AI API fees",
+      "Model hosting subscriptions",
+      "Custom model development projects"
+    ],
+    "use_cases": [
+      "Predictive maintenance for energy assets",
+      "Credit or risk scoring for green finance",
+      "Demand forecasting for utilities"
+    ],
+    "examples": [
+      "OpenAI API",
+      "Specialised ML model providers"
+    ],
+    "risks": [
+      "Model performance and bias issues",
+      "Data access and privacy concerns",
+      "Rapidly evolving competition and standards"
+    ]
   },
   {
     "id": "BM32",
@@ -254,7 +911,28 @@
     "description": "Create virtual replicas of assets or processes sold as a monitoring or optimization service.",
     "tags": ["digital", "IoT", "B2B", "recurring"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "High",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Digital twin software subscriptions",
+      "Implementation and modelling fees",
+      "Ongoing optimisation services"
+    ],
+    "use_cases": [
+      "Battery systems and microgrids",
+      "Manufacturing lines and plants",
+      "EV fleets and logistics networks"
+    ],
+    "examples": [
+      "Industrial digital twin platforms",
+      "Cloud providers’ IoT twin solutions"
+    ],
+    "risks": [
+      "High integration and data requirements",
+      "Complex sales and long cycles",
+      "Clients may underestimate data needs and effort"
+    ]
   },
   {
     "id": "BM33",
@@ -262,7 +940,28 @@
     "description": "Use blockchain tokens to represent ownership or usage rights for assets or services.",
     "tags": ["blockchain", "finance", "innovation", "digital"],
     "maturity_level": "emerging",
-    "success_score": 0.55
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Token issuance and listing fees",
+      "Transaction or protocol fees",
+      "Platform services around tokenised assets"
+    ],
+    "use_cases": [
+      "Fractional ownership of infrastructure",
+      "Tokenised carbon or impact assets",
+      "Community investment schemes"
+    ],
+    "examples": [
+      "Tokenised real estate platforms",
+      "Tokenised green bonds (early pilots)"
+    ],
+    "risks": [
+      "Regulatory and compliance uncertainty",
+      "Market volatility and speculation",
+      "Need for strong security and governance"
+    ]
   },
   {
     "id": "BM34",
@@ -270,7 +969,28 @@
     "description": "Peer-to-peer exchange of goods or services using smart contracts.",
     "tags": ["blockchain", "platform", "transaction", "innovation"],
     "maturity_level": "emerging",
-    "success_score": 0.55
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Protocol or transaction fees",
+      "Governance token value capture",
+      "Premium services and integrations"
+    ],
+    "use_cases": [
+      "Peer-to-peer energy trading",
+      "Decentralised freelance or data markets",
+      "DeFi-style financial marketplaces"
+    ],
+    "examples": [
+      "Decentralised exchanges (conceptually)",
+      "Early P2P energy trading pilots"
+    ],
+    "risks": [
+      "Regulatory and legal ambiguity",
+      "User experience barriers for mainstream users",
+      "Smart contract and security vulnerabilities"
+    ]
   },
   {
     "id": "BM35",
@@ -278,7 +998,28 @@
     "description": "Issue tradeable tokens linked to verified impact outcomes (carbon, social, or biodiversity).",
     "tags": ["impact", "blockchain", "finance", "green"],
     "maturity_level": "emerging",
-    "success_score": 0.55
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Sale of tokenised impact credits",
+      "Platform or marketplace fees",
+      "Verification and audit services"
+    ],
+    "use_cases": [
+      "Tokenised carbon credits",
+      "Biodiversity or nature credits",
+      "Social impact measurement tokens"
+    ],
+    "examples": [
+      "Early tokenised carbon pilots",
+      "Impact-focused blockchain initiatives"
+    ],
+    "risks": [
+      "Trust and integrity concerns in impact data",
+      "Perception of greenwashing if governance is weak",
+      "Regulatory treatment of tokens and securities law"
+    ]
   },
   {
     "id": "BM36",
@@ -286,7 +1027,28 @@
     "description": "Provide energy infrastructure, operation, and optimization with pay-per-use billing.",
     "tags": ["infrastructure", "recurring", "green", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 5,
+    "capital_requirement": "High",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Service fees per kWh or per site",
+      "Performance-based savings shares",
+      "Long-term service and optimisation contracts"
+    ],
+    "use_cases": [
+      "Solar plus storage for commercial clients",
+      "Microgrids for remote communities",
+      "EV charging networks operated as a service"
+    ],
+    "examples": [
+      "Third-party-owned solar with service contracts",
+      "Microgrid solution providers"
+    ],
+    "risks": [
+      "Large capital requirement and financing complexity",
+      "Operational and performance risk over long contracts",
+      "Regulatory and tariff uncertainty"
+    ]
   },
   {
     "id": "BM37",
@@ -294,7 +1056,28 @@
     "description": "Finance and implement efficiency projects, repaid from cost savings.",
     "tags": ["finance", "green", "performance", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "High",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Shared savings from energy cost reduction",
+      "Project development and implementation fees",
+      "Performance bonuses for exceeding targets"
+    ],
+    "use_cases": [
+      "Building energy retrofits",
+      "Industrial efficiency upgrades",
+      "Street lighting upgrades"
+    ],
+    "examples": [
+      "Global ESCOs in building and industrial sectors",
+      "Public–private ESCO programmes"
+    ],
+    "risks": [
+      "Measurement and verification complexity",
+      "Credit risk of counterparties",
+      "Policy changes affecting energy tariffs"
+    ]
   },
   {
     "id": "BM38",
@@ -302,7 +1085,28 @@
     "description": "Build-Own-Operate-Transfer model for infrastructure with long-term returns.",
     "tags": ["infrastructure", "finance", "high_capex", "public"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 5,
+    "capital_requirement": "High",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Availability payments or tariffs",
+      "User fees over concession period",
+      "Residual asset value at transfer"
+    ],
+    "use_cases": [
+      "Power plants and transmission lines",
+      "Water treatment and desalination plants",
+      "Transport and logistics infrastructure"
+    ],
+    "examples": [
+      "PPP toll roads and power plants",
+      "BOOT renewable energy projects"
+    ],
+    "risks": [
+      "Long construction and ramp-up timelines",
+      "Political and regulatory risk over decades",
+      "Complex financing and contract structures"
+    ]
   },
   {
     "id": "BM39",
@@ -310,7 +1114,28 @@
     "description": "Combine grants, equity, and loans to de-risk early-stage innovation.",
     "tags": ["finance", "impact", "hybrid"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 4,
+    "capital_requirement": "High",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Management fees on funds",
+      "Success or performance fees",
+      "Interest or royalty flows"
+    ],
+    "use_cases": [
+      "Climate finance facilities",
+      "Innovation funds in emerging markets",
+      "Risk-sharing funds for deep tech"
+    ],
+    "examples": [
+      "Green climate blended funds",
+      "DFI-led blended initiatives"
+    ],
+    "risks": [
+      "Complex stakeholder and mandate alignment",
+      "Difficult portfolio construction and measurement",
+      "Governance and transparency expectations"
+    ]
   },
   {
     "id": "BM40",
@@ -318,7 +1143,28 @@
     "description": "Raise sustainability-linked finance instruments for project portfolios.",
     "tags": ["finance", "impact", "green"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "High",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Management fees",
+      "Interest spreads or investment returns",
+      "Performance fees for outperformance"
+    ],
+    "use_cases": [
+      "Financing renewable energy portfolios",
+      "Green infrastructure projects",
+      "Climate adaptation and resilience investments"
+    ],
+    "examples": [
+      "Green bond issuances",
+      "Specialised climate funds"
+    ],
+    "risks": [
+      "Greenwashing scrutiny and reporting burdens",
+      "Portfolio concentration in specific asset classes",
+      "Regulatory shifts in sustainable finance"
+    ]
   },
   {
     "id": "BM41",
@@ -326,7 +1172,28 @@
     "description": "Loan with interest rates that decrease when social or environmental targets are met.",
     "tags": ["finance", "impact", "innovation"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Loan interest payments",
+      "Incentive fees tied to performance",
+      "Blended finance top-ups"
+    ],
+    "use_cases": [
+      "SME energy or climate investments",
+      "Sustainability-linked performance loans",
+      "Innovation projects with clear KPIs"
+    ],
+    "examples": [
+      "Sustainability-linked loans",
+      "Impact-linked finance pilots"
+    ],
+    "risks": [
+      "Complexity in defining and measuring KPIs",
+      "Potential disputes about impact performance",
+      "Need for robust verification partners"
+    ]
   },
   {
     "id": "BM42",
@@ -334,7 +1201,28 @@
     "description": "Use materials-back loops where suppliers recover or refurbish used goods.",
     "tags": ["manufacturing", "sustainability", "green", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Recovered material resale",
+      "Service contracts for reverse logistics",
+      "Premium pricing for circular offerings"
+    ],
+    "use_cases": [
+      "Battery returns and recycling loops",
+      "Electronics take-back systems",
+      "Industrial materials re-use"
+    ],
+    "examples": [
+      "OEM circular supply chain pilots",
+      "Global electronics recovery programmes"
+    ],
+    "risks": [
+      "Complex coordination across suppliers",
+      "Need for reliable reverse logistics",
+      "Variability in returned materials quality"
+    ]
   },
   {
     "id": "BM43",
@@ -342,7 +1230,28 @@
     "description": "Refurbish, remanufacture, and resell returned or used products.",
     "tags": ["sustainability", "retail", "impact", "innovation"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Sales of refurbished products",
+      "Service and warranty add-ons",
+      "Parts harvesting and reuse"
+    ],
+    "use_cases": [
+      "Second-life batteries for stationary storage",
+      "Refurbished electronics or appliances",
+      "Upcycled or repaired consumer goods"
+    ],
+    "examples": [
+      "Certified refurbished electronics programmes",
+      "Second-life EV battery projects"
+    ],
+    "risks": [
+      "Perceived quality concerns by customers",
+      "Warranty and liability management",
+      "Sourcing sufficient volumes of used products"
+    ]
   },
   {
     "id": "BM44",
@@ -350,7 +1259,28 @@
     "description": "Cloud-connected production network offering on-demand fabrication.",
     "tags": ["manufacturing", "digital", "platform", "B2B"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Production commissions",
+      "Platform subscriptions for manufacturers",
+      "Premium services like QA or logistics"
+    ],
+    "use_cases": [
+      "Distributed 3D printing networks",
+      "On-demand machining and fabrication",
+      "Regional industrial capacity sharing"
+    ],
+    "examples": [
+      "Global on-demand manufacturing platforms",
+      "Cloud manufacturing networks"
+    ],
+    "risks": [
+      "Quality consistency across multiple partners",
+      "IP and design file protection",
+      "Balancing capacity and demand across the network"
+    ]
   },
   {
     "id": "BM45",
@@ -358,7 +1288,28 @@
     "description": "3D-printing components for clients using digital inventory and design files.",
     "tags": ["manufacturing", "innovation", "B2B"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Per-part printing fees",
+      "Design and optimisation services",
+      "Maintenance of digital part libraries"
+    ],
+    "use_cases": [
+      "Spare parts on demand",
+      "Custom tools and fixtures",
+      "Lightweight or complex geometry components"
+    ],
+    "examples": [
+      "Specialised 3D print bureaus",
+      "Industrial additive manufacturing providers"
+    ],
+    "risks": [
+      "Capital cost of advanced printers",
+      "Competing with traditional manufacturing costs",
+      "Material limitations for certain applications"
+    ]
   },
   {
     "id": "BM46",
@@ -366,7 +1317,28 @@
     "description": "Shift from selling equipment to selling uptime or outcomes (e.g., power-by-the-hour).",
     "tags": ["services", "recurring", "innovation", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 5,
+    "capital_requirement": "High",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Outcome-based service contracts",
+      "Availability or uptime fees",
+      "Performance bonuses"
+    ],
+    "use_cases": [
+      "Industrial machinery and fleets",
+      "Energy generation or storage assets",
+      "Critical infrastructure systems"
+    ],
+    "examples": [
+      "Rolls-Royce power-by-the-hour",
+      "OEMs shifting to uptime contracts"
+    ],
+    "risks": [
+      "Taking on performance and usage risk",
+      "Need for deep monitoring and analytics",
+      "Complex contract design across customers"
+    ]
   },
   {
     "id": "BM47",
@@ -374,7 +1346,28 @@
     "description": "Members pay recurring fees for access to expert content, tools, or support.",
     "tags": ["community", "recurring", "digital", "B2C"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 2,
+    "capital_requirement": "Low",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Monthly or annual memberships",
+      "Upsells to premium tiers",
+      "Workshops or cohort programmes"
+    ],
+    "use_cases": [
+      "Communities for innovators and founders",
+      "Climate or energy professionals’ networks",
+      "Niche technical membership platforms"
+    ],
+    "examples": [
+      "Patreon-style communities",
+      "Niche professional communities"
+    ],
+    "risks": [
+      "Requires consistent content and engagement",
+      "Churn if value is not clear or unique",
+      "Founder time and energy dependency"
+    ]
   },
   {
     "id": "BM48",
@@ -382,7 +1375,28 @@
     "description": "Enable creators to monetize audience engagement or digital assets.",
     "tags": ["platform", "digital", "innovation", "B2C"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Transaction fees on creator revenue",
+      "Platform subscriptions",
+      "Advertising or sponsorships"
+    ],
+    "use_cases": [
+      "Video or podcast platforms",
+      "Digital course marketplaces",
+      "NFT or digital asset platforms"
+    ],
+    "examples": [
+      "YouTube Partner model",
+      "Gumroad, Patreon, Substack"
+    ],
+    "risks": [
+      "Winner-takes-most creator dynamics",
+      "Platform moderation and content risks",
+      "Dependence on external distribution (e.g., algorithms)"
+    ]
   },
   {
     "id": "BM49",
@@ -390,7 +1404,29 @@
     "description": "Raise small investments from many individuals in exchange for equity or perks.",
     "tags": ["finance", "platform", "innovation", "early_stage"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Platform listing and success fees",
+      "Follow-on services for funded companies",
+      "Investor services or analytics"
+    ],
+    "use_cases": [
+      "Startup fundraising platforms",
+      "Community-funded local projects",
+      "Thematic climate or energy crowdfunding"
+    ],
+    "examples": [
+      "Seedrs",
+      "Crowdcube",
+      "Local equity crowdfunding platforms"
+    ],
+    "risks": [
+      "Regulatory and investor protection requirements",
+      "High marketing effort per campaign",
+      "Portfolio performance and reputation"
+    ]
   },
   {
     "id": "BM50",
@@ -398,16 +1434,57 @@
     "description": "Let customers decide price, building loyalty and data for upselling.",
     "tags": ["retail", "innovation", "marketing"],
     "maturity_level": "established",
-    "success_score": 0.75
-  }
-,
-    {
+    "difficulty": 2,
+    "capital_requirement": "Low",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Voluntary payments",
+      "Upsell to fixed-price or premium offers",
+      "Donations or sponsorships"
+    ],
+    "use_cases": [
+      "Digital goods like e-books, templates or tools",
+      "Early-stage content or training offerings",
+      "Community or cause-aligned projects"
+    ],
+    "examples": [
+      "Bandcamp PWYW releases",
+      "Some independent creators’ content"
+    ],
+    "risks": [
+      "Revenue uncertainty and potential underpayment",
+      "Need for strong storytelling and mission",
+      "May not work well for high-cost products"
+    ]
+  },
+  {
     "id": "BM51",
     "name": "Dynamic Pricing Engine",
     "description": "Adjust pricing automatically using demand, time, or AI predictions.",
     "tags": ["AI", "pricing", "innovation", "B2C"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Software subscriptions",
+      "Performance-based pricing improvements",
+      "Implementation and integration services"
+    ],
+    "use_cases": [
+      "Transport and tourism pricing",
+      "Energy tariffs and time-of-use pricing",
+      "Retail and e-commerce price optimisation"
+    ],
+    "examples": [
+      "Airline dynamic pricing tools",
+      "Retail price optimisation engines"
+    ],
+    "risks": [
+      "Customer backlash if pricing feels unfair",
+      "Regulatory scrutiny around discrimination",
+      "Dependence on high-quality data"
+    ]
   },
   {
     "id": "BM52",
@@ -415,7 +1492,28 @@
     "description": "Charge annual membership for integrated ecosystem benefits and resources.",
     "tags": ["platform", "recurring", "community", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Annual or multi-year memberships",
+      "Premium tiers for additional services",
+      "Event or programme fees"
+    ],
+    "use_cases": [
+      "Innovation or incubator networks",
+      "Sector-specific climate or energy ecosystems",
+      "Professional alliances with shared resources"
+    ],
+    "examples": [
+      "Industry associations with membership models",
+      "Private innovation networks"
+    ],
+    "risks": [
+      "Perceived value must stay high to retain members",
+      "Too many passive members reduce network value",
+      "Governance and conflict management across members"
+    ]
   },
   {
     "id": "BM53",
@@ -423,7 +1521,28 @@
     "description": "Bundle physical product sales with digital monitoring service contracts.",
     "tags": ["IoT", "recurring", "hardware", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "High",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Maintenance and monitoring subscriptions",
+      "Analytics and optimisation upsells",
+      "Upgrades and retrofits informed by twin insights"
+    ],
+    "use_cases": [
+      "Battery or energy storage systems",
+      "Industrial machinery with digital twins",
+      "Building or plant operations"
+    ],
+    "examples": [
+      "Premium maintenance bundled with digital services",
+      "OEMs offering digital monitoring contracts"
+    ],
+    "risks": [
+      "Integration and data collection challenges",
+      "Responsibility for performance based on digital insights",
+      "Security and cyber risk exposure"
+    ]
   },
   {
     "id": "BM54",
@@ -431,7 +1550,28 @@
     "description": "Premiums dynamically adjusted based on monitored usage data.",
     "tags": ["finance", "AI", "IoT", "innovation"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 4,
+    "capital_requirement": "High",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Insurance premiums",
+      "Data and analytics services",
+      "Risk advisory and consulting"
+    ],
+    "use_cases": [
+      "Telematics-based vehicle insurance",
+      "Equipment insurance tied to usage and conditions",
+      "Energy performance insurance"
+    ],
+    "examples": [
+      "Pay-how-you-drive insurance products",
+      "IoT-based asset insurance"
+    ],
+    "risks": [
+      "Regulatory and actuarial complexity",
+      "Customer concerns about privacy and monitoring",
+      "Data quality and device reliability"
+    ]
   },
   {
     "id": "BM55",
@@ -439,7 +1579,27 @@
     "description": "Payments tied to treatment results or patient recovery outcomes.",
     "tags": ["healthcare", "impact", "innovation", "services"],
     "maturity_level": "emerging",
-    "success_score": 0.55
+    "difficulty": 5,
+    "capital_requirement": "High",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Outcome-based contracts with payers",
+      "Shared savings agreements",
+      "Digital health service subscriptions"
+    ],
+    "use_cases": [
+      "Chronic disease management programmes",
+      "Digital therapeutics and remote monitoring",
+      "Value-based care arrangements"
+    ],
+    "examples": [
+      "Early pilots of value-based healthcare contracts"
+    ],
+    "risks": [
+      "Complex regulatory and payment environments",
+      "Outcome attribution and data challenges",
+      "Long feedback loops and clinical validation needs"
+    ]
   },
   {
     "id": "BM56",
@@ -447,7 +1607,28 @@
     "description": "Combine profit motives with social impact goals and reinvestment.",
     "tags": ["impact", "hybrid", "local", "innovation"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Sales of products or services",
+      "Grants or impact investment",
+      "Service contracts with public or NGO partners"
+    ],
+    "use_cases": [
+      "Inclusive energy or mobility ventures",
+      "Local manufacturing for jobs and impact",
+      "Education or healthcare social enterprises"
+    ],
+    "examples": [
+      "Certified social enterprises",
+      "B-Corp style hybrid ventures"
+    ],
+    "risks": [
+      "Balancing mission with financial sustainability",
+      "Investor expectations vs impact mandates",
+      "Resource constraints in lower-income communities"
+    ]
   },
   {
     "id": "BM57",
@@ -455,7 +1636,28 @@
     "description": "Use points, rewards, or challenges to increase customer retention.",
     "tags": ["digital", "marketing", "innovation"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 2,
+    "capital_requirement": "Low",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Core product or service sales",
+      "In-app purchases or upgrades",
+      "Sponsorships or brand partnerships"
+    ],
+    "use_cases": [
+      "Energy-saving challenges for households",
+      "Learning or training platforms",
+      "Health and wellness behaviour change apps"
+    ],
+    "examples": [
+      "Duolingo-style streaks",
+      "Fitness and habit-tracking apps"
+    ],
+    "risks": [
+      "Shallow or manipulative gamification can backfire",
+      "Engagement may not translate into real value",
+      "User fatigue if mechanics are overused"
+    ]
   },
   {
     "id": "BM58",
@@ -463,7 +1665,27 @@
     "description": "Provide automated writing, design, or video creation as a service.",
     "tags": ["AI", "software", "digital", "recurring"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Content generation subscriptions",
+      "Per-output or per-credit billing",
+      "Custom content workflow integrations"
+    ],
+    "use_cases": [
+      "Marketing content production",
+      "Educational or explainer content",
+      "Report drafting and summarisation"
+    ],
+    "examples": [
+      "AI writing assistants and design tools"
+    ],
+    "risks": [
+      "Quality control and fact-checking needs",
+      "Ethical and copyright concerns",
+      "Rapid commoditisation as tools proliferate"
+    ]
   },
   {
     "id": "BM59",
@@ -471,7 +1693,27 @@
     "description": "Create distributed small-scale franchises with shared branding and tools.",
     "tags": ["franchise", "local", "distribution", "impact"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Low-cost franchise fees",
+      "Markup on shared inputs or tools",
+      "Training and support services"
+    ],
+    "use_cases": [
+      "Last-mile energy or telecom services",
+      "Health or education micro-enterprises",
+      "Local distribution of tech products"
+    ],
+    "examples": [
+      "Micro-franchise models in emerging markets"
+    ],
+    "risks": [
+      "Maintaining quality across many small operators",
+      "Income volatility for franchisees",
+      "Ensuring fair value sharing and support"
+    ]
   },
   {
     "id": "BM60",
@@ -479,7 +1721,28 @@
     "description": "Offer ongoing maintenance plans for consumer or industrial goods.",
     "tags": ["services", "recurring", "B2C", "B2B"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Monthly or annual maintenance subscriptions",
+      "Premium on-site or priority service fees",
+      "Additional repairs and parts sales"
+    ],
+    "use_cases": [
+      "Household appliances",
+      "EVs and fleets",
+      "Industrial or lab equipment"
+    ],
+    "examples": [
+      "Extended warranty and service plans",
+      "Third-party appliance or vehicle service clubs"
+    ],
+    "risks": [
+      "Accurate pricing versus real failure rates",
+      "Technician capacity and scheduling",
+      "Customer perception if service quality is poor"
+    ]
   },
   {
     "id": "BM61",
@@ -487,7 +1750,28 @@
     "description": "Sell predictive insights using proprietary AI models or datasets.",
     "tags": ["AI", "data", "recurring", "B2B"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Analytics subscriptions",
+      "Per-analysis or per-report fees",
+      "Custom model and integration projects"
+    ],
+    "use_cases": [
+      "Energy demand forecasting",
+      "Equipment failure prediction",
+      "Customer churn or credit risk analytics"
+    ],
+    "examples": [
+      "Specialised analytics consultancies",
+      "Cloud-based AI analytics platforms"
+    ],
+    "risks": [
+      "Need for continuous data updates and monitoring",
+      "Model drift and loss of accuracy over time",
+      "Client dependence on explanations and interpretability"
+    ]
   },
   {
     "id": "BM62",
@@ -495,7 +1779,28 @@
     "description": "Integrate e-commerce with immersive physical experiences or AR try-ons.",
     "tags": ["retail", "digital", "innovation", "B2C"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Product sales online and in-store",
+      "Experiential add-ons or events",
+      "Partnerships with brands in shared spaces"
+    ],
+    "use_cases": [
+      "Showrooms for EVs or tech devices",
+      "AR-enhanced shopping experiences",
+      "Experience-first sustainability retail"
+    ],
+    "examples": [
+      "Showroom-style retail concepts",
+      "Brands combining pop-ups and online sales"
+    ],
+    "risks": [
+      "Higher operating costs for physical experience spaces",
+      "Complex integration of digital and physical data",
+      "Unclear ROI on experiential elements"
+    ]
   },
   {
     "id": "BM63",
@@ -503,7 +1808,27 @@
     "description": "Reward customers with tradeable digital tokens redeemable across partners.",
     "tags": ["blockchain", "marketing", "innovation", "digital"],
     "maturity_level": "emerging",
-    "success_score": 0.55
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Brand participation or integration fees",
+      "Breakage of unused rewards",
+      "Data and analytics services for partners"
+    ],
+    "use_cases": [
+      "Multi-brand loyalty ecosystems",
+      "EV charging or mobility loyalty tokens",
+      "Sustainability-linked customer rewards"
+    ],
+    "examples": [
+      "Early token-based loyalty pilots"
+    ],
+    "risks": [
+      "Customer confusion around tokens and value",
+      "Regulatory ambiguity around digital tokens",
+      "Partner alignment and technical integration"
+    ]
   },
   {
     "id": "BM64",
@@ -511,7 +1836,28 @@
     "description": "Offer hyper-personalized products or content recommendations using AI.",
     "tags": ["AI", "software", "marketing", "digital"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "SaaS subscriptions",
+      "Performance-based uplift fees",
+      "Consulting and integration services"
+    ],
+    "use_cases": [
+      "Personalised content or product feeds",
+      "Energy-saving recommendations for households",
+      "Targeted offers in mobility or retail"
+    ],
+    "examples": [
+      "Recommendation engines in e-commerce or streaming",
+      "Personalised marketing platforms"
+    ],
+    "risks": [
+      "Privacy and data protection concerns",
+      "Algorithmic bias and fairness issues",
+      "Customer discomfort with over-personalisation"
+    ]
   },
   {
     "id": "BM65",
@@ -519,7 +1865,28 @@
     "description": "Monetize immersive VR/AR experiences for education or entertainment.",
     "tags": ["VR", "digital", "innovation", "B2C"],
     "maturity_level": "emerging",
-    "success_score": 0.55
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Experience ticket or access fees",
+      "Subscriptions for recurring content",
+      "Brand partnerships and sponsorships"
+    ],
+    "use_cases": [
+      "Immersive education on energy, climate or health",
+      "Virtual tours of facilities or microgrids",
+      "Entertainment and simulation experiences"
+    ],
+    "examples": [
+      "VR content platforms",
+      "Immersive museum or science experiences"
+    ],
+    "risks": [
+      "Hardware adoption and accessibility constraints",
+      "Content creation costs",
+      "Motion sickness and user comfort issues"
+    ]
   },
   {
     "id": "BM66",
@@ -527,7 +1894,28 @@
     "description": "Enable experts to monetize their insights and micro-consulting sessions.",
     "tags": ["platform", "services", "B2B", "digital"],
     "maturity_level": "dominant",
-    "success_score": 0.90
+    "difficulty": 3,
+    "capital_requirement": "Low",
+    "time_to_revenue": "0–3 months",
+    "revenue_streams": [
+      "Commission on expert sessions",
+      "Platform subscription fees",
+      "Premium placement or matching services"
+    ],
+    "use_cases": [
+      "Expert calls on niche technical topics",
+      "Ad-hoc advisory for climate or energy projects",
+      "Micro-consulting for startups and investors"
+    ],
+    "examples": [
+      "GLG, AlphaSights-style expert networks",
+      "Freelance expert platforms"
+    ],
+    "risks": [
+      "Ensuring expert quality and credibility",
+      "Compliance with conflicts of interest rules",
+      "Matching supply and demand in niche domains"
+    ]
   },
   {
     "id": "BM67",
@@ -535,7 +1923,27 @@
     "description": "Community-owned digital platform sharing value among contributors.",
     "tags": ["impact", "community", "platform", "innovation"],
     "maturity_level": "emerging",
-    "success_score": 0.55
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Membership or platform usage fees",
+      "Collective bargaining or service margins",
+      "Grants or impact investment"
+    ],
+    "use_cases": [
+      "Worker-owned gig or service platforms",
+      "Community energy or mobility platforms",
+      "Data cooperatives"
+    ],
+    "examples": [
+      "Emerging platform co-ops in labour and services"
+    ],
+    "risks": [
+      "Complex governance among many owners",
+      "Capital raising constraints",
+      "Decision-making speed versus democratic processes"
+    ]
   },
   {
     "id": "BM68",
@@ -543,7 +1951,28 @@
     "description": "Provide automated research, simulation, and experiment-as-a-service tools.",
     "tags": ["AI", "early_stage", "innovation", "research"],
     "maturity_level": "emerging",
-    "success_score": 0.55
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Access fees or subscriptions",
+      "Per-simulation or per-study billing",
+      "Custom research and consulting services"
+    ],
+    "use_cases": [
+      "Battery and materials simulations",
+      "Techno-economic scenario modelling",
+      "Healthcare or biotech modelling"
+    ],
+    "examples": [
+      "AI-augmented R&D platforms",
+      "Simulation-as-a-service tools"
+    ],
+    "risks": [
+      "Validation of models against real-world data",
+      "Regulatory and IP questions around AI-generated results",
+      "High expectations for accuracy and insight"
+    ]
   },
   {
     "id": "BM69",
@@ -551,7 +1980,28 @@
     "description": "Match IP holders with licensees through verified digital transactions.",
     "tags": ["IP", "platform", "innovation", "finance"],
     "maturity_level": "established",
-    "success_score": 0.75
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "3–12 months",
+    "revenue_streams": [
+      "Transaction commissions on IP deals",
+      "Listing and valuation fees",
+      "Premium analytics or brokerage services"
+    ],
+    "use_cases": [
+      "Patent licensing across sectors",
+      "University IP marketplace",
+      "Portfolio monetisation for corporates or investors"
+    ],
+    "examples": [
+      "Early-stage IP marketplaces",
+      "Patent brokerage and auction platforms"
+    ],
+    "risks": [
+      "Valuation and quality assessment of IP",
+      "Legal and jurisdictional complexity",
+      "Low liquidity in many IP niches"
+    ]
   },
   {
     "id": "BM70",
@@ -559,7 +2009,26 @@
     "description": "Aggregate and monetize anonymized data shared by ecosystem members.",
     "tags": ["data", "platform", "innovation", "B2B"],
     "maturity_level": "emerging",
-    "success_score": 0.55
+    "difficulty": 4,
+    "capital_requirement": "Medium",
+    "time_to_revenue": "12+ months",
+    "revenue_streams": [
+      "Data access subscriptions",
+      "Custom analytics and benchmarking reports",
+      "Licensing of aggregated datasets"
+    ],
+    "use_cases": [
+      "Shared data across energy or mobility ecosystems",
+      "Sector-wide innovation benchmarks",
+      "Carbon or climate data cooperatives"
+    ],
+    "examples": [
+      "Emerging data cooperative initiatives"
+    ],
+    "risks": [
+      "Data privacy and governance complexity",
+      "Aligning incentives among data contributors",
+      "Ensuring anonymisation and security"
+    ]
   }
-
 ]

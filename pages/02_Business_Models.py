@@ -22,30 +22,37 @@ ARCHETYPES = {
     "Impact & Sustainability": ["impact", "green", "carbon", "local", "sustainability"],
 }
 
+ARCTYPE_OPTIONS = list(ARCHETYPES.keys()) + ["Show All Models"]
+
 # ---------------------------
 # UI Header
 # ---------------------------
 st.title("Business Model Explorer")
-
-st.write("Select an archetype below to explore the most relevant business models:")
+st.write("Select an archetype below to explore models most suited to your innovation strategy.")
 
 # ---------------------------
-# Archetype Selection
+# Archetype Selection Widget
 # ---------------------------
 selected_arch = st.segmented_control(
     "Choose a Business Model Archetype",
-    list(ARCHETYPES.keys()) + ["Show All Models"]
+    options=ARCTYPE_OPTIONS,
+    default=None
 )
 
 st.divider()
 
 # ---------------------------
-# Filter Models Based on Archetype
+# Filter Logic (Safe)
 # ---------------------------
+if not selected_arch:
+    st.info("Please choose an archetype above to continue.")
+    st.stop()
+
 if selected_arch == "Show All Models":
     filtered = MODELS
 else:
-    tags = ARCHETYPES[selected_arch]
+    # SAFE ACCESS → no KeyError possible
+    tags = ARCHETYPES.get(selected_arch, [])
     filtered = [m for m in MODELS if any(t in m["tags"] for t in tags)]
 
 # ---------------------------
@@ -57,47 +64,40 @@ if query:
     filtered = [m for m in filtered if query.lower() in m["name"].lower()]
 
 # ---------------------------
-# 2-Column Layout Rendering
+# Render Tiles in 2 Columns
 # ---------------------------
 cols = st.columns(2)
 
 for index, bm in enumerate(filtered):
     with cols[index % 2].container(border=True, padding=15):
 
-        # Header
         st.subheader(bm["name"])
         st.caption(bm["id"])
 
-        # Description
         st.write(bm["description"])
 
-        # Tags
-        tag_cols = st.columns(len(bm["tags"]))
+        # Tags as pills
+        tag_cols = st.columns(min(len(bm["tags"]), 4))
         for i, tag in enumerate(bm["tags"]):
-            tag_cols[i].markdown(f"🟦 **{tag}**")
+            tag_cols[i % 4].markdown(f"🟦 **{tag}**")
 
-        # Metrics Row
         col1, col2 = st.columns(2)
         col1.write(f"**Difficulty:** {bm['difficulty']} / 5")
         col2.write(f"**Capex:** {bm['capital_requirement']}")
 
-        # Time to revenue
         st.write(f"**Time to revenue:** {bm['time_to_revenue']}")
 
-        # Revenue Streams
+        # Rich details
         with st.expander("Revenue Streams"):
-            st.write("\n".join([f"- {x}" for x in bm["revenue_streams"]]))
+            st.markdown("\n".join([f"- {x}" for x in bm["revenue_streams"]]))
 
-        # Use Cases
         with st.expander("Use Cases"):
-            st.write("\n".join([f"- {x}" for x in bm["use_cases"]]))
+            st.markdown("\n".join([f"- {x}" for x in bm["use_cases"]]))
 
-        # Examples
         with st.expander("Examples"):
-            st.write("\n".join([f"- {x}" for x in bm["examples"]]))
+            st.markdown("\n".join([f"- {x}" for x in bm["examples"]]))
 
-        # Risks
         with st.expander("Risks"):
-            st.write("\n".join([f"- {x}" for x in bm["risks"]]))
+            st.markdown("\n".join([f"- {x}" for x in bm["risks"]]))
 
 

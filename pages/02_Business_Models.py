@@ -14,90 +14,94 @@ if not os.path.exists(DATA_PATH):
 with open(DATA_PATH, "r", encoding="utf-8") as f:
     BUSINESS_MODELS = json.load(f)
 
-# ---- Sidebar Filters ----
-st.sidebar.header("Filters")
+# ----------- Colour Map for Category Tags ----------
+TAG_COLOURS = {
+    "AI": "#DCE7FF",
+    "software": "#FFE8D9",
+    "platform": "#E9FFD9",
+    "innovation": "#F4E5FF",
+    "impact": "#E0F7FA",
+    "finance": "#FFF4D6",
+    "manufacturing": "#FFE6E6",
+    "green": "#E0FFE6",
+}
 
-# Unique maturity levels and tags
-all_maturity = sorted(list({bm["maturity_level"] for bm in BUSINESS_MODELS}))
-all_tags = sorted(list({tag for bm in BUSINESS_MODELS for tag in bm["tags"]}))
+def tag_chip(tag):
+    colour = TAG_COLOURS.get(tag, "#f0f0f0")
+    return f"""
+    <span style="
+        background:{colour};
+        padding:6px 10px;
+        border-radius:8px;
+        margin-right:6px;
+        font-size:0.8em;
+        color:#333;
+    ">{tag}</span>
+    """
 
-selected_maturity = st.sidebar.multiselect(
-    "Filter by maturity level",
-    all_maturity,
-)
+# ---- Tiled Grid Layout ----
+NUM_COLUMNS = 3
+cols = st.columns(NUM_COLUMNS)
 
-selected_tags = st.sidebar.multiselect(
-    "Filter by tags",
-    all_tags,
-)
+for idx, bm in enumerate(BUSINESS_MODELS):
+    col = cols[idx % NUM_COLUMNS]  # choose which column to put the tile in
 
-# ---- Filtering Logic ----
-def passes_filters(bm):
-    if selected_maturity and bm["maturity_level"] not in selected_maturity:
-        return False
-    if selected_tags and not any(tag in bm["tags"] for tag in selected_tags):
-        return False
-    return True
-
-filtered_models = [bm for bm in BUSINESS_MODELS if passes_filters(bm)]
-
-# ---- Display Cards ----
-st.write(f"### Showing {len(filtered_models)} of {len(BUSINESS_MODELS)} models")
-
-for bm in filtered_models:
-    with st.container():
+    with col:
         st.markdown(
             f"""
             <div style="
-                border:1px solid #ddd;
-                padding:18px;
+                background:white;
                 border-radius:12px;
+                padding:18px;
                 margin-bottom:20px;
-                background-color:#fafafa;
+                border:1px solid #e5e5e5;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             ">
-                <h3>{bm["name"]} <span style='font-size:0.8em;color:#777;'>({bm["id"]})</span></h3>
-                <p style="color:#333;">{bm["description"]}</p>
+                <h3 style="margin-bottom:0px;">{bm['name']}</h3>
+                <span style="color:#888;font-size:0.9em;">{bm['id']}</span><br><br>
+                <p style="color:#444;min-height:60px;">{bm['description']}</p>
+
+                <div style="margin-bottom:10px;">
+                    {" ".join([tag_chip(t) for t in bm['tags']])}
+                </div>
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    font-size:0.8em;
+                    color:#444;
+                    margin-top:10px;
+                ">
+                    <div><strong>Difficulty:</strong> {bm.get('difficulty','-')}/5</div>
+                    <div><strong>Capex:</strong> {bm.get('capital_requirement','-')}</div>
+                </div>
+
+                <div style="
+                    font-size:0.8em;
+                    color:#444;
+                    margin-top:4px;
+                ">
+                    <strong>Time to Rev:</strong> {bm.get('time_to_revenue','-')}
+                </div>
+            </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
-        # Metrics Row
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Difficulty", f"{bm.get('difficulty', '-')}/5")
-        col2.metric("Capital Need", bm.get("capital_requirement", "-"))
-        col3.metric("Time to Revenue", bm.get("time_to_revenue", "-"))
+        # Expandable details (prevents long scroll)
+        with st.expander("Learn More"):
+            st.markdown(f"**Revenue Streams**")
+            for r in bm.get("revenue_streams", []):
+                st.markdown(f"- {r}")
 
-        # Tags as chips
-        st.markdown("**Tags:**")
-        tag_html = " ".join(
-            [f"<span style='background:#e0f0ff;padding:6px;border-radius:6px;margin-right:4px;font-size:0.8em;'>{t}</span>"
-             for t in bm["tags"]]
-        )
-        st.markdown(tag_html, unsafe_allow_html=True)
+            st.markdown(f"**Use Cases**")
+            for u in bm.get("use_cases", []):
+                st.markdown(f"- {u}")
 
-        # Revenue Streams
-        if bm.get("revenue_streams"):
-            st.markdown("**Revenue Streams:**")
-            for item in bm["revenue_streams"]:
-                st.markdown(f"- {item}")
+            st.markdown(f"**Examples**")
+            st.write(", ".join(bm.get("examples", [])))
 
-        # Use Cases
-        if bm.get("use_cases"):
-            st.markdown("**Use Cases:**")
-            for item in bm["use_cases"]:
-                st.markdown(f"- {item}")
-
-        # Examples
-        if bm.get("examples"):
-            st.markdown("**Examples:**")
-            st.markdown(", ".join(bm["examples"]))
-
-        # Risks
-        if bm.get("risks"):
-            st.markdown("**Risks:**")
-            for item in bm["risks"]:
-                st.markdown(f"- {item}")
-
-        st.markdown("</div>", unsafe_allow_html=True)
-
+            st.markdown(f"**Risks**")
+            for r in bm.get("risks", []):
+                st.markdown(f"- {r}")
 

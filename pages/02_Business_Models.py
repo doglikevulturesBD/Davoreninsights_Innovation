@@ -1,96 +1,147 @@
 import streamlit as st
 import json
-import random
 
-st.title("Business Model Card Viewer")
-st.caption("Explore one model at a time — Davoren Insights Edition")
-
-st.markdown("---")
-
-# ----------------------------------
-# Load Business Models
-# ----------------------------------
-with open("data/business_models.json", "r") as f:
+# -------------------------------
+# Load Data
+# -------------------------------
+with open("data/business_models_v2.json", "r") as f:
     BUSINESS_MODELS = json.load(f)
 
+with open("data/archetype_tags.json", "r") as f:
+    ARCHETYPE_TAGS = json.load(f)
 
-# ----------------------------------
-# Get one model (random or select)
-# ----------------------------------
-model_names = [bm["name"] for bm in BUSINESS_MODELS]
+MATURITY_MAP = {
+    "emerging": 0.3,
+    "established": 0.6,
+    "dominant": 1.0
+}
 
-option = st.selectbox("Choose a business model to view:", ["Random Model"] + model_names)
+# -------------------------------
+# Scoring Function (v2)
+# -------------------------------
+def score_model(model, archetype_tags):
+    tag_overlap = len(set(model["tags"]) & set(archetype_tags)) / len(model["tags"])
+    maturity_w = MATURITY_MAP.get(model["maturity_level"], 0.5)
 
-if option == "Random Model":
-    bm = random.choice(BUSINESS_MODELS)
+    # Simplified since success_score removed
+    final_score = (0.7 * tag_overlap) + (0.3 * maturity_w)
+    return final_score
+
+
+# -------------------------------
+# State Init
+# -------------------------------
+if "archetype" not in st.session_state:
+    st.session_state["archetype"] = None
+
+if "secondary_done" not in st.session_state:
+    st.session_state["secondary_done"] = False
+
+
+# -------------------------------
+# UI Step 1: Choose Archetype
+# -------------------------------
+st.title("Business Model Explorer (v2)")
+
+if st.session_state["archetype"] is None:
+    st.subheader("1. Choose your Innovator Archetype")
+    choice = st.radio(
+        "Select the closest match to your profile:",
+        list(ARCHETYPE_TAGS.keys())
+    )
+
+    if st.button("Continue"):
+        st.session_state["archetype"] = choice
+        st.rerun()
+
 else:
-    bm = next(x for x in BUSINESS_MODELS if x["name"] == option)
+    archetype = st.session_state["archetype"]
+    st.success(f"Selected Archetype: **{archetype}**")
 
-st.markdown("---")
+    archetype_tags = ARCHETYPE_TAGS[archetype]
 
-# ----------------------------------
-# FUTURISTIC CARD LAYOUT
-# ----------------------------------
-st.subheader(bm["name"])
-st.write(f"**Model ID:** {bm['id']}")
+    # -------------------------------
+    # UI Step 2: Secondary Questions
+    # -------------------------------
+    if not st.session_state["secondary_done"]:
+        st.subheader("2. Refine your profile")
 
-st.markdown(
-    f"""
-    <div style="
-        padding: 20px;
-        border-radius: 12px;
-        background-color: rgba(30,30,40,0.8);
-        border: 1px solid rgba(100,150,255,0.4);
-        box-shadow: 0 0 20px rgba(50,100,200,0.4);
-        color: #eee;
-    ">
-    <h3 style="color:#4CC9F0; margin-top:0;">Overview</h3>
-    <p style="font-size:16px;">{bm['description']}</p>
+        q1 = st.selectbox(
+            "How fast do you want to commercialize?",
+            ["Slow & Research-heavy", "Moderate", "Fast"]
+        )
 
-    <h4 style="color:#FFD166;">Tags</h4>
-    <p>{", ".join(bm['tags'])}</p>
+        q2 = st.selectbox(
+            "Which is more important to you?",
+            ["Recurring revenue", "Impact outcomes", "User scale", "Technology depth"]
+        )
 
-    <h4 style="color:#FFD166;">Success Score</h4>
-    <p>{int(bm['success_score'] * 100)}%</p>
+        q3 = st.selectbox(
+            "What is your available startup capital?",
+            ["Very low (< R50k)", "Medium", "High"]
+        )
 
-    <h4 style="color:#FFD166;">Maturity Level</h4>
-    <p>{bm['maturity_level'].title()}</p>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+        if st.button("Generate Recommendations"):
+            st.session_state["secondary_done"] = True
+            st.session_state["q1"] = q1
+            st.session_state["q2"] = q2
+            st.session_state["q3"] = q3
+            st.rerun()
 
-st.markdown("---")
+    # -------------------------------
+    # Step 3: Ranking + Display
+    # -------------------------------
+    if st.session_state["secondary_done"]:
+        st.subheader("3. Recommended Business Models (Top 5)")
 
+        # --- scoring ---
+        results = []
+        for model in BUSINESS_MODELS:
+            score = score_model(model, archetype_tags)
+            results.append((model, score))
 
-# ----------------------------------
-# MINI-SCENARIOS (FUN + USEFUL)
-# ----------------------------------
+        results = sorted(results, key=lambda x: x[1], reverse=True)
+        top5 = results[:5]
 
-st.subheader("Micro-Scenarios (What Works / What Fails)")
-st.write("These help you understand where this model shines and where it breaks.")
+        # ----------------------------------------
+        # RICH CARD LAYOUT FOR TOP 5 MODELS
+        # ----------------------------------------
+        for bm, score in top5:
+            st.markdown(f"## {bm['name']}")
+            st.markdown(f"*{bm['description']}*")
 
-good = st.text_area(
-    "✔ When this model works best:",
-    placeholder="e.g., SaaS works best when recurring usage is predictable..."
-)
+            # --- Key attributes ---
+            col1, col2, col3 = st.columns(3)
+            col1.metric("Difficulty", bm.get("difficulty", "-").title())
+            col2.metric("Capital Needed", bm.get("capital_requirement", "-").title())
+            col3.metric("Time to Revenue", bm.get("time_to_revenue", "-").title())
 
-bad = st.text_area(
-    "❌ When this model fails:",
-    placeholder="e.g., fails when user activation is low or onboarding is complex..."
-)
+            # --- Rich details ---
+            st.markdown("### Revenue Streams")
+            for r in bm.get("revenue_streams", []):
+                st.markdown(f"- {r}")
 
-st.markdown("---")
+            st.markdown("### Typical Use Cases")
+            for u in bm.get("use_cases", []):
+                st.markdown(f"- {u}")
 
-# ----------------------------------
-# FUTURE BUTTONS
-# ----------------------------------
-col1, col2 = st.columns(2)
+            st.markdown("### Real-World Examples")
+            for ex in bm.get("examples", []):
+                st.markdown(f"- {ex}")
 
-with col1:
-    st.button("Next Model (Random)")
-with col2:
-    st.button("Save Notes (Future Feature)")
+            st.markdown("### Risks & Challenges")
+            for rk in bm.get("risks", []):
+                st.markdown(f"- {rk}")
 
+            st.markdown("---")
 
+        # ----------------------------------------
+        # SEE ALL MODELS (Simple list)
+        # ----------------------------------------
+        with st.expander("See all 70 business models"):
+            for bm in BUSINESS_MODELS:
+                st.markdown(f"### {bm['name']}")
+                st.markdown(bm["description"])
+                st.caption(f"Tags: {', '.join(bm['tags'])}")
+                st.markdown("---")
 

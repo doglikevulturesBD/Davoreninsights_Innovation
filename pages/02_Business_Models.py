@@ -1,6 +1,5 @@
 import streamlit as st
 import json
-import re
 
 # -------------------------------------------------------------------
 # Load Data
@@ -11,15 +10,14 @@ with open("data/business_models.json", "r") as f:
 with open("data/archetype_tags.json", "r") as f:
     ARCHETYPES = json.load(f)
 
-# Weight map
+# Weight map for scoring
 MATURITY_MAP = {"emerging": 0.3, "established": 0.6, "dominant": 1.0}
 
 # -------------------------------------------------------------------
-# Helper: Format Tag Chip
+# Helper: Tag Chip
 # -------------------------------------------------------------------
 def tag_chip(tag):
     """Return an HTML tag chip with colour coding."""
-    # simple colour categories
     colour_map = {
         "AI": "#E3F2FD",
         "software": "#FFF3E0",
@@ -31,8 +29,8 @@ def tag_chip(tag):
         "digital": "#F3E5F5",
         "research": "#E0F7FA",
     }
-
     bg = colour_map.get(tag, "#EFEFEF")
+
     return f"""
         <span style="
             background:{bg};
@@ -45,7 +43,7 @@ def tag_chip(tag):
     """
 
 # -------------------------------------------------------------------
-# Helper: Scoring Function
+# Helper: Score Function
 # -------------------------------------------------------------------
 def score_model(model, archetype_tags):
     overlap = len(set(model["tags"]) & set(archetype_tags))
@@ -57,17 +55,32 @@ def score_model(model, archetype_tags):
     return (0.5 * tag_score) + (0.3 * base_success) + (0.2 * maturity_score)
 
 # -------------------------------------------------------------------
-# Helper: Create Business Model Tile
+# Helper: Render a Bullet List
+# -------------------------------------------------------------------
+def bullet_list(items):
+    if not items:
+        return "<div></div>"
+
+    items_html = "".join(f"<li style='margin-bottom:4px;'>{i}</li>" for i in items)
+    return f"<ul style='margin-top:6px;margin-bottom:12px;padding-left:20px;'>{items_html}</ul>"
+
+# -------------------------------------------------------------------
+# Helper: Business Model Tile
 # -------------------------------------------------------------------
 def render_bm_tile(bm):
     name = bm["name"]
     desc = bm["description"]
-
     tags_html = " ".join(tag_chip(t) for t in bm['tags'])
 
     difficulty = bm.get("difficulty", "-")
     capex = bm.get("capital_requirement", "-")
     ttr = bm.get("time_to_revenue", "-")
+
+    # extra educational fields
+    rev = bm.get("revenue_streams", [])
+    use = bm.get("use_cases", [])
+    ex = bm.get("examples", [])
+    risks = bm.get("risks", [])
 
     return f"""
     <div style="
@@ -109,21 +122,41 @@ def render_bm_tile(bm):
             <strong>Time to Revenue:</strong> {ttr}
         </div>
 
+        <hr style="margin:14px 0;">
+
+        <div style="margin-top:8px;">
+            <strong>Revenue Streams</strong>
+            {bullet_list(rev)}
+        </div>
+
+        <div style="margin-top:8px;">
+            <strong>Use Cases</strong>
+            {bullet_list(use)}
+        </div>
+
+        <div style="margin-top:8px;">
+            <strong>Example Companies</strong>
+            {bullet_list(ex)}
+        </div>
+
+        <div style="margin-top:8px;">
+            <strong>Risks</strong>
+            {bullet_list(risks)}
+        </div>
+
     </div>
     """
 
 # -------------------------------------------------------------------
 # Streamlit UI
 # -------------------------------------------------------------------
-st.title("Business Models — Learning & Recommendation")
+st.title("Business Models — Education & Recommendation")
 
-# Maintain session state
 if "archetype_selected" not in st.session_state:
     st.session_state["archetype_selected"] = False
 
-
 # -------------------------------------------------------------------
-# Step 1: Choose Archetype
+# Step 1 — Archetype Selection
 # -------------------------------------------------------------------
 st.subheader("1. Choose Your Innovator Archetype")
 
@@ -143,9 +176,8 @@ else:
     st.success(f"Archetype selected: **{archetype}**")
     archetype_tags = ARCHETYPES[archetype]
 
-
 # -------------------------------------------------------------------
-# Step 2: Recommendations
+# Step 2 — Top 5 Recommendations
 # -------------------------------------------------------------------
 if st.session_state["archetype_selected"]:
     st.subheader("2. Recommended Business Models (Top 5)")
@@ -161,13 +193,13 @@ if st.session_state["archetype_selected"]:
     for bm, score in top5:
         st.markdown(render_bm_tile(bm), unsafe_allow_html=True)
 
-
 # -------------------------------------------------------------------
-# Step 3: Explore All 70 Models
+# Step 3 — Explore All Models
 # -------------------------------------------------------------------
 st.subheader("3. Explore All 70 Business Models")
 
-with st.expander("Show All Business Models"):
+with st.expander("Open full list"):
     for bm in BUSINESS_MODELS:
         st.markdown(render_bm_tile(bm), unsafe_allow_html=True)
+
 

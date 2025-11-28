@@ -1,155 +1,96 @@
 import streamlit as st
+import json
+import random
 
-st.title("Business Models — Education Module")
-st.caption("Davoren Insights: Learning → Tools → Application")
-
-st.markdown("---")
-
-# -------------------------
-# INTRO
-# -------------------------
-st.header("What Is a Business Model?")
-st.write("""
-A business model explains **how your innovation creates value, delivers value, and captures value**.
-
-Most innovators jump immediately into technology — but investors always ask:
-**“How will you make money, and why will this work?”**
-
-Understanding business models helps you:
-- position your technology correctly  
-- avoid unrealistic paths  
-- focus on a repeatable strategy  
-- match your TRL and funding stage  
-""")
-
-st.info("""
-A great business model = repeatable + scalable + defendable.
-""")
+st.title("Business Model Card Viewer")
+st.caption("Explore one model at a time — Davoren Insights Edition")
 
 st.markdown("---")
 
-# -------------------------
-# CORE BUSINESS MODEL CATEGORIES
-# -------------------------
-st.header("The 8 Major Business Model Archetypes")
-st.write("Most real business models fit into one or a combination of these 8 categories.")
+# ----------------------------------
+# Load Business Models
+# ----------------------------------
+with open("data/business_models.json", "r") as f:
+    BUSINESS_MODELS = json.load(f)
 
-bm_categories = {
-    "1. Recurring / Subscription Models": """
-    **Examples:** SaaS, membership, recurring fees  
-    **Strength:** Predictable revenue  
-    **Best for:** Software, analytics, digital communities  
-    """,
 
-    "2. Platform & Marketplace Models": """
-    **Examples:** marketplaces, crowdsourcing, ecosystem orchestrators  
-    **Strength:** Network effects  
-    **Best for:** B2B/B2C platforms, transaction-based systems  
-    """,
+# ----------------------------------
+# Get one model (random or select)
+# ----------------------------------
+model_names = [bm["name"] for bm in BUSINESS_MODELS]
 
-    "3. Data & AI Monetisation Models": """
-    **Examples:** DaaS, predictive analytics, AI-as-a-service  
-    **Strength:** High scalability  
-    **Best for:** Analytics tools, ML/AI startups  
-    """,
+option = st.selectbox("Choose a business model to view:", ["Random Model"] + model_names)
 
-    "4. Hardware / Infrastructure Models": """
-    **Examples:** Hardware-as-a-service, OEM, energy services  
-    **Strength:** Strong defensibility  
-    **Best for:** IoT, energy tech, industrial systems  
-    """,
-
-    "5. Impact & Sustainability Models": """
-    **Examples:** carbon credits, circular economy, impact-linked loans  
-    **Strength:** Grant + investment blend  
-    **Best for:** Climate innovations, ESG-focused ventures  
-    """,
-
-    "6. Finance & Hybrid Investment Models": """
-    **Examples:** blended finance, royalty, revenue share models  
-    **Strength:** Works for high-risk deep tech  
-    **Best for:** TRL 4–9 enterprises  
-    """,
-
-    "7. Manufacturing & Production Models": """
-    **Examples:** white-label, OEM, digital manufacturing networks  
-    **Strength:** Scales with demand  
-    **Best for:** physical products, engineering companies  
-    """,
-
-    "8. Creator & Digital Experience Models": """
-    **Examples:** content platforms, gamification, VR experiences  
-    **Strength:** Low CAPEX  
-    **Best for:** creators, edtech, VR/AR innovators  
-    """,
-}
-
-for category, desc in bm_categories.items():
-    with st.expander(category):
-        st.markdown(desc)
+if option == "Random Model":
+    bm = random.choice(BUSINESS_MODELS)
+else:
+    bm = next(x for x in BUSINESS_MODELS if x["name"] == option)
 
 st.markdown("---")
 
-# -------------------------
-# HOW TO CHOOSE THE RIGHT BUSINESS MODEL
-# -------------------------
-st.header("How to Choose the Right Business Model")
-st.write("""
-Your business model must match:
+# ----------------------------------
+# FUTURISTIC CARD LAYOUT
+# ----------------------------------
+st.subheader(bm["name"])
+st.write(f"**Model ID:** {bm['id']}")
 
-1. **Your TRL**  
-   - TRL 1–3 → concepts with licensing, grants, research  
-   - TRL 4–6 → hybrid models, pilot revenue, early partnerships  
-   - TRL 7–9 → recurring, platform, product sales, services  
+st.markdown(
+    f"""
+    <div style="
+        padding: 20px;
+        border-radius: 12px;
+        background-color: rgba(30,30,40,0.8);
+        border: 1px solid rgba(100,150,255,0.4);
+        box-shadow: 0 0 20px rgba(50,100,200,0.4);
+        color: #eee;
+    ">
+    <h3 style="color:#4CC9F0; margin-top:0;">Overview</h3>
+    <p style="font-size:16px;">{bm['description']}</p>
 
-2. **Your capital availability**  
-   - Low capital → digital, subscription, data  
-   - Medium → platform, consulting-to-product  
-   - High → hardware, infrastructure, ESCO, OEM  
+    <h4 style="color:#FFD166;">Tags</h4>
+    <p>{", ".join(bm['tags'])}</p>
 
-3. **Your innovation’s nature**  
-   - Software → SaaS, freemium, platform  
-   - Hardware → HaaS, OEM, leasing  
-   - Impact → carbon credits, circular models  
-   - AI → AI-as-a-service, predictive analytics  
+    <h4 style="color:#FFD166;">Success Score</h4>
+    <p>{int(bm['success_score'] * 100)}%</p>
 
-4. **Your market type (B2B, B2C, public sector)**  
-""")
-
-st.success("""
-**Rule of thumb:**  
-The business model must fit the *physics* of your innovation — not the other way around.
-""")
-
-st.markdown("---")
-
-# -------------------------
-# LINK TO THE MENTOR TOOL
-# -------------------------
-st.info("""
-### 👉 Apply this knowledge to your own idea  
-Use the **Business Model Selector** inside the *Innovation Mentor* app
-to generate your personalised top 3 recommendations based on your innovator archetype.
-
-**Open Innovation Mentor → Business Model Tool**
-""")
-
-st.markdown("---")
-
-# -------------------------
-# OPTIONAL YOUTUBE EMBED
-# -------------------------
-st.header("Video Explainer (Coming Soon)")
-st.write("A short 3–5 minute breakdown of common business models will appear here.")
-st.write("Once uploaded, we can embed your YouTube link here.")
-
-
-# -------------------------
-# OPTIONAL DOWNLOAD
-# -------------------------
-st.download_button(
-    label="Download Business Model Summary",
-    data="Business Model Summary Placeholder",
-    file_name="business_model_summary.txt"
+    <h4 style="color:#FFD166;">Maturity Level</h4>
+    <p>{bm['maturity_level'].title()}</p>
+    </div>
+    """,
+    unsafe_allow_html=True
 )
+
+st.markdown("---")
+
+
+# ----------------------------------
+# MINI-SCENARIOS (FUN + USEFUL)
+# ----------------------------------
+
+st.subheader("Micro-Scenarios (What Works / What Fails)")
+st.write("These help you understand where this model shines and where it breaks.")
+
+good = st.text_area(
+    "✔ When this model works best:",
+    placeholder="e.g., SaaS works best when recurring usage is predictable..."
+)
+
+bad = st.text_area(
+    "❌ When this model fails:",
+    placeholder="e.g., fails when user activation is low or onboarding is complex..."
+)
+
+st.markdown("---")
+
+# ----------------------------------
+# FUTURE BUTTONS
+# ----------------------------------
+col1, col2 = st.columns(2)
+
+with col1:
+    st.button("Next Model (Random)")
+with col2:
+    st.button("Save Notes (Future Feature)")
+
+
 

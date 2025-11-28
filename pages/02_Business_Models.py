@@ -14,7 +14,50 @@ if not os.path.exists(DATA_PATH):
 with open(DATA_PATH, "r", encoding="utf-8") as f:
     BUSINESS_MODELS = json.load(f)
 
-# ----------- Colour Map for Category Tags ----------
+# ---------------------------------------------------
+# 1. Build Archetypes Based on Tags (auto-grouping)
+# ---------------------------------------------------
+ARHETYPES = {
+    "AI & Data": ["AI", "data"],
+    "Software (SaaS, Apps)": ["software", "recurring"],
+    "Platforms & Ecosystems": ["platform"],
+    "Finance & Funding Models": ["finance"],
+    "Green & Impact Models": ["green", "impact"],
+    "Manufacturing & Hardware": ["hardware", "manufacturing", "IoT"],
+    "Retail / B2C Models": ["B2C", "retail"],
+    "Innovation / Research": ["early_stage", "innovation", "research"],
+}
+
+def match_archetype(bm, selected_tags):
+    return any(tag in bm["tags"] for tag in selected_tags)
+
+
+# ---------------------------------------------------
+# 2. User selects archetype
+# ---------------------------------------------------
+st.subheader("Select a Business Model Archetype")
+
+selected_arch = st.selectbox(
+    "Choose a category",
+    list(ARHETYPES.keys()),
+)
+
+selected_tags = ARHETYPES[selected_arch]
+
+# Filter models for this archetype
+filtered_models = [
+    bm for bm in BUSINESS_MODELS
+    if match_archetype(bm, selected_tags)
+]
+
+st.markdown("---")
+st.subheader(f"Models in: {selected_arch}")
+st.markdown("Choose a model and expand to learn more.")
+
+# ---------------------------------------------------
+# 3. Card Design (same beautiful tile layout)
+# ---------------------------------------------------
+
 TAG_COLOURS = {
     "AI": "#DCE7FF",
     "software": "#FFE8D9",
@@ -24,6 +67,8 @@ TAG_COLOURS = {
     "finance": "#FFF4D6",
     "manufacturing": "#FFE6E6",
     "green": "#E0FFE6",
+    "B2B": "#E8E8FF",
+    "B2C": "#FFF2E8",
 }
 
 def tag_chip(tag):
@@ -39,12 +84,12 @@ def tag_chip(tag):
     ">{tag}</span>
     """
 
-# ---- Tiled Grid Layout ----
+
 NUM_COLUMNS = 3
 cols = st.columns(NUM_COLUMNS)
 
-for idx, bm in enumerate(BUSINESS_MODELS):
-    col = cols[idx % NUM_COLUMNS]  # choose which column to put the tile in
+for idx, bm in enumerate(filtered_models):
+    col = cols[idx % NUM_COLUMNS]
 
     with col:
         st.markdown(
@@ -88,20 +133,18 @@ for idx, bm in enumerate(BUSINESS_MODELS):
             unsafe_allow_html=True,
         )
 
-        # Expandable details (prevents long scroll)
         with st.expander("Learn More"):
-            st.markdown(f"**Revenue Streams**")
+            st.markdown("### Revenue Streams")
             for r in bm.get("revenue_streams", []):
                 st.markdown(f"- {r}")
 
-            st.markdown(f"**Use Cases**")
+            st.markdown("### Use Cases")
             for u in bm.get("use_cases", []):
                 st.markdown(f"- {u}")
 
-            st.markdown(f"**Examples**")
+            st.markdown("### Examples")
             st.write(", ".join(bm.get("examples", [])))
 
-            st.markdown(f"**Risks**")
+            st.markdown("### Risks")
             for r in bm.get("risks", []):
                 st.markdown(f"- {r}")
-

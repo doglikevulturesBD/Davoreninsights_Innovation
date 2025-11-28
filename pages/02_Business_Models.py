@@ -1,208 +1,150 @@
 import streamlit as st
 import json
-import os
 
-st.set_page_config(page_title="Business Models", layout="wide")
+st.set_page_config(layout="wide")
 
-# --------------------------------------------------
-# Load JSON
-# --------------------------------------------------
-DATA_PATH = "data/business_models.json"
-
-if not os.path.exists(DATA_PATH):
-    st.error("JSON file missing.")
-    st.stop()
-
-with open(DATA_PATH, "r") as f:
+# ------------------------------------------------------
+# Load Business Models
+# ------------------------------------------------------
+with open("data/business_models.json", "r") as f:
     BUSINESS_MODELS = json.load(f)
 
-
-# --------------------------------------------------
+# ------------------------------------------------------
 # Archetypes
-# --------------------------------------------------
+# ------------------------------------------------------
 ARCHETYPES = {
-    "Digital / Software": ["software", "AI", "platform", "data"],
-    "Hardware / Manufacturing": ["hardware", "manufacturing", "infrastructure"],
-    "Green / Impact": ["green", "impact", "sustainability"],
-    "Finance / Investment": ["finance", "hybrid", "public"],
-    "Ecosystem / Services": ["services", "community", "B2B"]
+    "Digital SaaS / AI Tools": ["software", "AI", "digital", "recurring"],
+    "Platforms & Ecosystems": ["platform", "community", "ecosystem", "transaction"],
+    "Hardware & Energy Systems": ["hardware", "IoT", "infrastructure", "high_capex"],
+    "Finance & Climate Models": ["finance", "impact", "green", "hybrid"],
+    "Social / Community / Impact": ["local", "cooperative", "impact", "community"]
 }
 
-
-# --------------------------------------------------
-# CSS (theme-aware, beautiful)
-# --------------------------------------------------
+# ------------------------------------------------------
+# CSS Styles (modern, clean, high contrast)
+# ------------------------------------------------------
 st.markdown("""
 <style>
 
-/* Make cards theme-aware */
-:root {
-    --card-bg-light: #FAFAFA;
-    --card-bg-dark: #1E1E1E;
-    --text-light: #111;
-    --text-dark: #EEE;
-    --subtext-light: #333;
-    --subtext-dark: #CCC;
-}
-
-/* Use Streamlit's theme detection */
-html[data-theme="light"] {
-    --card-bg: var(--card-bg-light);
-    --text-primary: var(--text-light);
-    --text-secondary: var(--subtext-light);
-}
-
-html[data-theme="dark"] {
-    --card-bg: var(--card-bg-dark);
-    --text-primary: var(--text-dark);
-    --text-secondary: var(--subtext-dark);
-}
-
 .business-card {
-    background-color: var(--card-bg);
-    border-radius: 14px;
-    padding: 20px;
-    margin-bottom: 22px;
-    border: 1px solid rgba(200,200,200,0.18);
-    transition: all 0.2s ease-in-out;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    border: 1px solid #e6e6e6;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
-
 .business-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-    border-color: rgba(180,180,180,0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
 }
 
 .business-title {
-    font-size: 1.2em;
-    font-weight: 600;
-    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #222;
     margin-bottom: 4px;
 }
 
 .business-id {
-    color: var(--text-secondary);
-    font-size: 0.8em;
-    margin-bottom: 12px;
+    font-size: 0.80rem;
+    color: #777;
+    margin-bottom: 10px;
 }
 
 .desc-text {
-    color: var(--text-secondary);
-    font-size: 0.92em;
+    font-size: 0.90rem;
+    color: #333;
+    margin-bottom: 12px;
 }
 
 .tag-chip {
-    background: rgba(120,160,255,0.15);
-    padding: 6px 12px;
-    border-radius: 999px;
-    margin-right: 8px;
-    margin-bottom: 6px;
-    font-size: 0.75em;
+    background: #EEF2FF;
+    border-radius: 8px;
+    padding: 4px 10px;
+    margin-right: 6px;
     display: inline-block;
-    color: var(--text-primary);
-    border: 1px solid rgba(120,120,255,0.25);
+    font-size: 0.75rem;
+    color: #222;
+    border: 1px solid #ddd;
 }
 
 .metric-row {
     display: flex;
     justify-content: space-between;
+    color: #333;
+    font-size: 0.85rem;
     margin-top: 12px;
-    font-size: 0.85em;
-    color: var(--text-secondary);
+    margin-bottom: 6px;
 }
 
 .section-title {
-    margin-top: 18px;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.detail-list li {
-    margin-bottom: 6px;
-    font-size: 0.92em;
-    color: var(--text-secondary);
+    font-weight: 700;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: #222;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
+# ------------------------------------------------------
+# Title
+# ------------------------------------------------------
+st.title("Business Model Explorer 🚀")
+st.write("Select an archetype to view relevant business models.")
 
-# --------------------------------------------------
-# UI controls
-# --------------------------------------------------
-st.title("Business Model Explorer")
+# ------------------------------------------------------
+# Step 1 — Select Archetype
+# ------------------------------------------------------
+selected_arch = st.selectbox("Choose Business Model Archetype:", [""] + list(ARCHETYPES.keys()))
 
-selected_arch = st.selectbox("Choose Archetype:", ["All"] + list(ARCHETYPES.keys()))
-query = st.text_input("Search Models...")
+if not selected_arch:
+    st.info("Please select an archetype above to continue.")
+    st.stop()
 
+tags_to_filter = ARCHETYPES[selected_arch]
 
-# --------------------------------------------------
-# Filtering
-# --------------------------------------------------
-filtered = BUSINESS_MODELS
+# ------------------------------------------------------
+# Step 2 — Filter Models
+# ------------------------------------------------------
+filtered = [bm for bm in BUSINESS_MODELS if any(t in bm["tags"] for t in tags_to_filter)]
 
-if selected_arch != "All":
-    tags = ARCHETYPES[selected_arch]
-    filtered = [m for m in filtered if any(t in m["tags"] for t in tags)]
+st.subheader(f"Recommended Models for: **{selected_arch}**")
+st.caption(f"{len(filtered)} matching models found.")
 
-if query.strip():
-    q = query.lower()
-    filtered = [
-        m for m in filtered
-        if q in m["name"].lower()
-        or q in m["description"].lower()
-        or any(q in t.lower() for t in m["tags"])
-    ]
-
-st.markdown(f"### Showing **{len(filtered)}** models")
-
-
-# --------------------------------------------------
-# Display cards
-# --------------------------------------------------
 cols = st.columns(2)
 
+# ------------------------------------------------------
+# Step 3 — Display cards
+# ------------------------------------------------------
 for i, bm in enumerate(filtered):
+
+    card_html = f"""
+    <div class='business-card'>
+        <div class='business-title'>{bm["name"]}</div>
+        <div class='business-id'>{bm["id"]}</div>
+        <div class='desc-text'>{bm["description"]}</div>
+
+        <div style="margin-bottom:8px;">
+            {''.join([f"<span class='tag-chip'>{t}</span>" for t in bm["tags"]])}
+        </div>
+
+        <div class='metric-row'>
+            <div><strong>Difficulty:</strong> {bm["difficulty"]} / 5</div>
+            <div><strong>Capex:</strong> {bm["capital_requirement"]}</div>
+        </div>
+
+        <div class='desc-text'>
+            <strong>Time to Revenue:</strong> {bm["time_to_revenue"]}
+        </div>
+    </div>
+    """
+
     with cols[i % 2]:
-        st.markdown("<div class='business-card'>", unsafe_allow_html=True)
+        st.markdown(card_html, unsafe_allow_html=True)
 
-        # Title + ID
-        st.markdown(
-            f"""
-            <div class='business-title'>{bm["name"]}</div>
-            <div class='business-id'>{bm["id"]}</div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        # Description
-        st.markdown(
-            f"<div class='desc-text'>{bm['description']}</div>",
-            unsafe_allow_html=True
-        )
-
-        # Tags
-        tags_html = "".join([f"<span class='tag-chip'>{t}</span>" for t in bm["tags"]])
-        st.markdown(f"<div style='margin-top:12px;'>{tags_html}</div>", unsafe_allow_html=True)
-
-        # Metrics
-        st.markdown(
-            f"""
-            <div class='metric-row'>
-                <div><strong>Difficulty:</strong> {bm.get("difficulty","-")} / 5</div>
-                <div><strong>Capex:</strong> {bm.get("capital_requirement","-")}</div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            f"<div class='desc-text'><strong>Time to Revenue:</strong> {bm['time_to_revenue']}</div>",
-            unsafe_allow_html=True
-        )
-
-        # Expanders
         with st.expander("Revenue Streams"):
             st.markdown("\n".join([f"- {x}" for x in bm["revenue_streams"]]))
 
@@ -215,5 +157,4 @@ for i, bm in enumerate(filtered):
         with st.expander("Risks"):
             st.markdown("\n".join([f"- {x}" for x in bm["risks"]]))
 
-        st.markdown("</div>", unsafe_allow_html=True)
 

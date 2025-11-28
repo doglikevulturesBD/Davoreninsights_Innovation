@@ -1,6 +1,7 @@
 import streamlit as st
 import math
 
+
 st.set_page_config(page_title="Financial Literacy for Innovators", layout="wide")
 
 st.title("📊 Financial Literacy for Innovators")
@@ -10,10 +11,7 @@ st.caption("A practical, non-intimidating overview of the numbers behind your in
 # ---------- Helper Functions ----------
 
 def compute_npv(cash_flows, discount_rate):
-    """
-    cash_flows: list of (t, cf) for t = 0,1,2,...
-    discount_rate: decimal, e.g. 0.1 for 10%
-    """
+    """cash_flows: list of (t, cf), discount_rate in decimal"""
     npv = 0.0
     for t, cf in cash_flows:
         npv += cf / ((1 + discount_rate) ** t)
@@ -21,16 +19,12 @@ def compute_npv(cash_flows, discount_rate):
 
 
 def compute_irr(cash_flows, tol=1e-4, max_iter=1000):
-    """
-    Basic IRR via binary search.
-    cash_flows: list of (t, cf) including t=0
-    Returns IRR as decimal or None if cannot solve.
-    """
-    # Check if IRR is likely solvable (must have sign change)
+    """Basic IRR solver via binary search"""
     npv0 = compute_npv(cash_flows, 0.0)
-    npv_high = compute_npv(cash_flows, 5.0)  # 500% discount as upper bound
+    npv_high = compute_npv(cash_flows, 5.0)
+
     if npv0 * npv_high > 0:
-        return None  # no sign change, probably no IRR in this range
+        return None
 
     low, high = 0.0, 5.0
     for _ in range(max_iter):
@@ -40,10 +34,8 @@ def compute_irr(cash_flows, tol=1e-4, max_iter=1000):
             return mid
         if npv0 * npv_mid < 0:
             high = mid
-            npv_high = npv_mid
         else:
             low = mid
-            npv0 = npv_mid
     return None
 
 
@@ -59,7 +51,6 @@ tabs = st.tabs([
     "Risk & Scenarios",
     "Adjusted Revenue",
     "Financial Story",
-    "Learning Scenarios (TRL → Finance)"
 ])
 
 # ---------- TAB 1: Costs ----------
@@ -71,392 +62,267 @@ with tabs[0]:
     Every innovation, no matter how technical, is sitting on a cost stack.
     """)
 
-    st.markdown("### Cost Types")
     st.markdown("""
     | Type           | Meaning                          | Examples                                  | Why It Matters                            |
     |----------------|----------------------------------|-------------------------------------------|-------------------------------------------|
     | **Fixed**      | Don’t change with units sold     | Salaries, rent, insurance, software       | Sets your monthly survival cost           |
-    | **Variable**   | Increase per unit                | Materials, packaging, shipping, lab time  | Determines your unit margin               |
-    | **Semi-variable** | Mixed behaviour               | Cloud services, utilities                 | Grows with usage, but not linearly        |
-    | **Hidden**     | Often forgotten                  | Rework, prototype failures, retesting     | Can quietly kill early-stage projects     |
+    | **Variable**   | Increase per unit                | Materials, packaging, lab time            | Determines your unit margin               |
+    | **Semi-variable** | Mixed behaviour               | Cloud services, utilities                 | Grows with usage but not linearly         |
+    | **Hidden**     | Often forgotten                  | Retesting, failed prototypes, delivery    | Quiet killers                             |
     """)
 
-    st.markdown("### Quick Calculator: Fixed vs Variable Mix")
+    st.markdown("### Quick Calculator")
+
     col1, col2 = st.columns(2)
-
     with col1:
-        fixed_costs = st.number_input("Total monthly fixed costs (R)", min_value=0.0, value=50000.0, step=1000.0)
-        variable_cost_per_unit = st.number_input("Variable cost per unit (R)", min_value=0.0, value=200.0, step=10.0)
+        fixed_costs = st.number_input("Monthly fixed costs (R)", 0.0, 50000.0)
+        var_cost = st.number_input("Variable cost per unit (R)", 0.0, 200.0)
     with col2:
-        price_per_unit = st.number_input("Selling price per unit (R)", min_value=0.0, value=500.0, step=10.0)
-        expected_units = st.number_input("Expected units sold per month", min_value=0, value=100, step=10)
+        price = st.number_input("Selling price per unit (R)", 0.0, 500.0)
+        expected_units = st.number_input("Expected monthly units", 0, 100)
 
-    if price_per_unit > 0:
-        margin_per_unit = price_per_unit - variable_cost_per_unit
+    margin = price - var_cost
+    st.write(f"- Margin per unit: **R{margin:,.2f}**")
+
+    if margin > 0:
+        breakeven_units = fixed_costs / margin
+        st.write(f"- Break-even units per month: **{breakeven_units:,.1f} units**")
     else:
-        margin_per_unit = 0
-
-    st.markdown("#### Results")
-    st.write(f"- Margin per unit: **R{margin_per_unit:,.2f}**")
-    if margin_per_unit > 0:
-        break_even_units = fixed_costs / margin_per_unit if margin_per_unit else 0
-        st.write(f"- Break-even units per month: **{break_even_units:,.1f} units**")
-    else:
-        st.warning("Set a selling price higher than your variable cost to get a meaningful margin.")
-
+        st.warning("Selling price must be higher than variable cost.")
 
 # ---------- TAB 2: Pricing ----------
 with tabs[1]:
     st.subheader("2. Pricing – Don’t Undervalue Your Idea")
 
     st.markdown("""
-    Your price should **tell a story**: the problem you solve and the value you create.
-
-    ### Common Pricing Approaches
-    | Method        | When It Works Best                  | Logic                                  | Notes                                   |
-    |---------------|-------------------------------------|----------------------------------------|-----------------------------------------|
-    | **Cost-Plus** | Hardware, manufacturing, simple B2B | Price = Cost + Markup%                 | Easy starting point                     |
-    | **Value-Based** | Deep-tech, energy, medtech        | Price = Portion of value you create    | Best for high-impact innovation         |
-    | **Benchmark** | Crowded markets, B2C                | Compare to competitors & adjust        | Prevents major over/under-pricing       |
+    | Method        | Best For                       | Logic                                  |
+    |---------------|--------------------------------|----------------------------------------|
+    | **Cost-Plus** | Hardware, manufacturing         | Price = Cost + Markup                  |
+    | **Value-Based** | High-value tech               | Price = Portion of value created       |
+    | **Benchmark** | Crowded markets                | Compare competitors & adjust           |
     """)
 
-    st.markdown("### Mini Value-Based Pricing Helper")
+    st.markdown("### Value-Based Pricing Helper")
+
     col1, col2, col3 = st.columns(3)
     with col1:
-        annual_saving = st.number_input("Estimated annual saving per customer (R)", min_value=0.0, value=120000.0, step=5000.0)
+        annual_saving = st.number_input("Annual customer saving (R)", 0.0, 120000.0)
     with col2:
-        share_of_value = st.slider("What % of that saving can you reasonably charge for?", min_value=1, max_value=50, value=20)
+        share = st.slider("Charge % of value created", 1, 50, 20)
     with col3:
-        contract_years = st.number_input("Typical contract length (years)", min_value=1, max_value=10, value=1)
+        years = st.number_input("Contract length (years)", 1, 1)
 
-    total_value = annual_saving * contract_years
-    suggested_price = total_value * (share_of_value / 100)
+    total_value = annual_saving * years
+    suggested_price = total_value * (share / 100)
 
-    st.write(f"- Total value created over contract: **R{total_value:,.0f}**")
-    st.write(f"- Suggested value-based price: **R{suggested_price:,.0f}**")
+    st.write(f"- Total value created: **R{total_value:,.0f}**")
+    st.write(f"- Suggested price: **R{suggested_price:,.0f}**")
 
 
 # ---------- TAB 3: Cash Flow ----------
 with tabs[2]:
     st.subheader("3. Cash Flow – What Actually Keeps You Alive")
-
-    st.markdown("""
-    **Profit is a theory, cash is reality.**  
-    Cash flow tells you how long you can survive and how fast you can grow.
-    """)
+    st.markdown("**Profit is opinion, cash is fact.**")
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        monthly_revenue = st.number_input("Monthly revenue (R)", min_value=0.0, value=150000.0, step=5000.0)
+        revenue = st.number_input("Monthly revenue (R)", 0.0, 150000.0)
     with col2:
-        monthly_variable = st.number_input("Monthly variable costs (R)", min_value=0.0, value=60000.0, step=5000.0)
+        variable = st.number_input("Monthly variable costs (R)", 0.0, 60000.0)
     with col3:
-        monthly_fixed = st.number_input("Monthly fixed costs (R)", min_value=0.0, value=50000.0, step=5000.0)
+        fixed = st.number_input("Monthly fixed costs (R)", 0.0, 50000.0)
     with col4:
-        cash_in_bank = st.number_input("Cash in bank (R)", min_value=0.0, value=300000.0, step=10000.0)
+        cash = st.number_input("Cash in bank (R)", 0.0, 300000.0)
 
-    gross_profit = monthly_revenue - monthly_variable
-    net_profit = gross_profit - monthly_fixed
-    burn_rate = max(monthly_fixed + monthly_variable - monthly_revenue, 0)
-    runway_months = (cash_in_bank / burn_rate) if burn_rate > 0 else math.inf
+    gross = revenue - variable
+    net = gross - fixed
+    burn = max(variable + fixed - revenue, 0)
+    runway = (cash / burn) if burn > 0 else float("inf")
 
-    st.markdown("### Summary")
-    st.write(f"- Gross profit: **R{gross_profit:,.0f}** per month")
-    st.write(f"- Net profit: **R{net_profit:,.0f}** per month")
-
-    if burn_rate == 0:
-        st.success("You are not burning cash at the current values (burn rate = 0).")
+    st.write(f"- Gross profit: **R{gross:,.0f}**")
+    st.write(f"- Net profit: **R{net:,.0f}**")
+    st.write(f"- Burn rate: **R{burn:,.0f}**")
+    if burn > 0:
+        st.write(f"- Runway: **{runway:,.1f} months**")
     else:
-        st.write(f"- Burn rate: **R{burn_rate:,.0f}** per month")
-        st.write(f"- Runway: **{runway_months:,.1f} months** at current burn rate")
+        st.success("No burn rate at current values.")
 
 
 # ---------- TAB 4: DCF & NPV ----------
 with tabs[3]:
     st.subheader("4. Discounted Cash Flow (DCF) & Net Present Value (NPV)")
 
-    st.markdown("""
-    **DCF** estimates what your future cash flows are worth **today**.  
-    **NPV** is the sum of those discounted cash flows minus the initial investment.
-
-    > Rule of thumb: if **NPV > 0**, the project adds value (on your assumptions).
-    """)
-
     col_top = st.columns(3)
     with col_top[0]:
-        initial_investment = st.number_input("Initial investment (Year 0, R)", min_value=0.0, value=200000.0, step=10000.0)
+        initial = st.number_input("Initial investment (Year 0, R)", 0.0, 200000.0)
     with col_top[1]:
-        years = st.slider("Number of projection years", min_value=1, max_value=10, value=5)
+        years = st.slider("Years", 1, 10, 5)
     with col_top[2]:
-        discount_rate_pct = st.slider("Discount rate (%)", min_value=1, max_value=40, value=12)
+        rate = st.slider("Discount rate (%)", 1, 40, 12)
 
-    st.markdown("### Estimated annual net cash flows (after all costs)")
-    cash_flow_cols = st.columns(years)
-    cash_flows_list = []
+    st.markdown("### Enter Future Cash Flows")
+    cf_cols = st.columns(years)
+    flows = []
     for i in range(years):
-        with cash_flow_cols[i]:
-            cf = st.number_input(f"Year {i+1}", key=f"dcf_year_{i+1}", value=float(100000 * (i+1)), step=10000.0)
-            cash_flows_list.append(cf)
+        with cf_cols[i]:
+            val = st.number_input(f"Year {i+1}", key=f"y{i+1}", value=float(100000*(i+1)))
+        flows.append(val)
 
-    if st.button("Calculate NPV", key="calc_npv"):
-        r = discount_rate_pct / 100.0
-        cash_flows_t = [(0, -initial_investment)]
-        for t, cf in enumerate(cash_flows_list, start=1):
-            cash_flows_t.append((t, cf))
+    if st.button("Calculate NPV"):
+        r = rate / 100
+        cash_flows = [(0, -initial)] + [(t, cf) for t, cf in enumerate(flows, 1)]
+        npv = compute_npv(cash_flows, r)
 
-        npv_value = compute_npv(cash_flows_t, r)
-        st.write(f"**NPV:** R{npv_value:,.2f}")
-
-        if npv_value > 0:
-            st.success("✅ Positive NPV: on these assumptions, the project creates value.")
-        elif npv_value < 0:
-            st.error("⚠️ Negative NPV: on these assumptions, the project destroys value.")
+        st.write(f"**NPV = R{npv:,.2f}**")
+        if npv > 0:
+            st.success("Positive NPV — project adds value.")
         else:
-            st.info("NPV is approximately zero – borderline case.")
+            st.error("Negative NPV — project destroys value.")
 
 
 # ---------- TAB 5: IRR ----------
 with tabs[4]:
     st.subheader("5. Internal Rate of Return (IRR)")
 
-    st.markdown("""
-    **IRR** is the discount rate at which **NPV = 0**.  
-    It is a way of expressing the project’s return as a single %.
-
-    > If **IRR is higher** than your required return (e.g. 12–15%), the project is attractive.
-    """)
-
-    st.markdown("Use the **same cash flows** as above or enter new ones:")
-
-    col_irr_top = st.columns(2)
-    with col_irr_top[0]:
-        irr_initial_investment = st.number_input("Initial investment (Year 0, R)", min_value=0.0, value=200000.0, step=10000.0, key="irr_invest")
-    with col_irr_top[1]:
-        irr_years = st.slider("Projection years", min_value=1, max_value=10, value=5, key="irr_years")
+    col_top = st.columns(2)
+    with col_top[0]:
+        irr_initial = st.number_input("Initial investment (R)", 0.0, 200000.0, key="i_initial")
+    with col_top[1]:
+        irr_years = st.slider("Years", 1, 10, 5, key="i_years")
 
     irr_cols = st.columns(irr_years)
-    irr_cash_flows = []
+    irr_flows = []
     for i in range(irr_years):
         with irr_cols[i]:
-            cf = st.number_input(f"Year {i+1}", key=f"irr_year_{i+1}", value=float(100000 * (i+1)), step=10000.0)
-            irr_cash_flows.append(cf)
+            val = st.number_input(f"Year {i+1}", value=float(100000*(i+1)), key=f"irr_y{i+1}")
+        irr_flows.append(val)
 
-    if st.button("Calculate IRR", key="calc_irr"):
-        cf_t = [(0, -irr_initial_investment)]
-        for t, cf in enumerate(irr_cash_flows, start=1):
-            cf_t.append((t, cf))
+    if st.button("Calculate IRR"):
+        cash_flows = [(0, -irr_initial)] + [(t, cf) for t, cf in enumerate(irr_flows, 1)]
+        irr = compute_irr(cash_flows)
 
-        irr_value = compute_irr(cf_t)
-        if irr_value is None:
-            st.error("Could not compute a meaningful IRR (cash flows may not produce a sign change in NPV).")
+        if irr is None:
+            st.error("IRR cannot be computed for these cash flows.")
         else:
-            st.write(f"**IRR:** {irr_value * 100:.2f}%")
-            if irr_value * 100 > 20:
-                st.success("Very strong IRR for an early-stage innovation (assuming assumptions are realistic).")
-            elif irr_value * 100 > 10:
-                st.info("Reasonable IRR for many innovation projects.")
+            irr_pct = irr * 100
+            st.write(f"**IRR = {irr_pct:.2f}%**")
+            if irr_pct > 20:
+                st.success("Strong IRR for innovation.")
+            elif irr_pct > 10:
+                st.info("Reasonable IRR.")
             else:
-                st.warning("IRR is relatively low. Re-check assumptions, cost base, and pricing.")
+                st.warning("Low IRR — recheck pricing and costs.")
 
 
 # ---------- TAB 6: Valuation Tools ----------
 with tabs[5]:
-    st.subheader("6. Simple Valuation Tools for Innovators")
+    st.subheader("6. Simple Valuation Tools")
 
     st.markdown("""
-    For early TRL projects, valuation is **more about logic than precision**.
-
-    | Method                | Best For                        | Logic                                      |
-    |-----------------------|----------------------------------|-------------------------------------------|
-    | **Scorecard**         | TRL 3–6, pre-revenue            | Weighted score for team, IP, traction     |
-    | **Comparables**       | TRL 7+, early commercial        | Compare to similar startups                |
-    | **DCF (NPV/IRR)**     | Revenue or strong pilots        | Discount future cash flows                 |
-    | **Multiples (e.g. ARR)** | SaaS/platforms with revenue | Apply a sector multiple to annual revenue |
+    | Method | Best For | Logic |
+    |--------|----------|--------|
+    | **Scorecard** | TRL 3–6 | Weighted score |  
+    | **Comparables** | TRL 7+ | Market comps |
+    | **DCF** | Revenue or strong pilots | Discount future cash |
+    | **Multiples** | SaaS / platform | ARR × multiple |
     """)
 
     st.markdown("### Quick Scorecard Demo")
-    st.caption("Not a full valuation, but a way to structure your thinking.")
     colA, colB, colC, colD = st.columns(4)
+
     with colA:
-        team = st.slider("Team strength (0–10)", 0, 10, 7)
+        team = st.slider("Team strength", 0, 10, 7)
     with colB:
-        ip = st.slider("IP strength (0–10)", 0, 10, 6)
+        ip = st.slider("IP strength", 0, 10, 6)
     with colC:
-        traction = st.slider("Traction (0–10)", 0, 10, 5)
+        traction = st.slider("Traction", 0, 10, 5)
     with colD:
-        market = st.slider("Market potential (0–10)", 0, 10, 8)
+        market = st.slider("Market size", 0, 10, 8)
 
     score = team*0.3 + ip*0.25 + traction*0.2 + market*0.25
-    st.write(f"**Scorecard score:** {score:.1f} / 10.0")
-    st.caption("You can later map this score to a valuation range or funding readiness level in the broader app.")
+    st.write(f"**Scorecard score: {score:.1f} / 10**")
 
 
 # ---------- TAB 7: Risk & Scenarios ----------
 with tabs[6]:
-    st.subheader("7. Financial Risk & Scenario Thinking")
+    st.subheader("7. Risk & Scenario Thinking")
 
     st.markdown("""
-    Every set of numbers should be tested under **different scenarios**.
-
-    | Risk Type       | Example                                 | Mitigation                        |
-    |-----------------|------------------------------------------|-----------------------------------|
-    | **Cost risk**   | Supplier price spike                     | Buffers, alternative suppliers    |
-    | **Revenue risk**| Customer delays adoption                 | Pilots, MoUs, staged rollouts     |
-    | **Scale risk**  | System fails at higher volume            | Phased scale-up, testing          |
-    | **Cash flow risk** | Late payments                        | Upfront deposits, milestone payments |
+    | Risk | Example | Mitigation |
+    |------|----------|-------------|
+    | **Cost risk** | Supplier increases prices | Buffers, multiple suppliers |
+    | **Revenue risk** | Customer delays | MoUs, early pilots |
+    | **Scale risk** | System fails at volume | Staged roll-out |
+    | **Cash flow risk** | Late payments | 50/50 upfront |
     """)
 
-    st.markdown("### Simple Scenario Explorer")
-    base_revenue = st.number_input("Base annual revenue (R)", min_value=0.0, value=1000000.0, step=50000.0)
-    base_costs = st.number_input("Base annual total costs (R)", min_value=0.0, value=700000.0, step=50000.0)
+    st.markdown("### Scenario Explorer")
+    base_rev = st.number_input("Base revenue (R)", 0.0, 1_000_000.0)
+    base_cost = st.number_input("Base costs (R)", 0.0, 700_000.0)
 
     col_b, col_e, col_w = st.columns(3)
+
     with col_b:
         st.markdown("**Best Case**")
-        rev_uplift = st.slider("Revenue +%", min_value=0, max_value=200, value=30, key="rev_up")
-        cost_change_best = st.slider("Cost -%", min_value=0, max_value=100, value=10, key="cost_down")
-        rev_best = base_revenue * (1 + rev_uplift/100)
-        cost_best = base_costs * (1 - cost_change_best/100)
-        st.write(f"Profit: R{rev_best - cost_best:,.0f}")
+        rev_up = st.slider("Revenue +%", 0, 200, 30)
+        cost_down = st.slider("Cost -%", 0, 50, 10)
+        st.write(f"Profit: R{base_rev*(1+rev_up/100) - base_cost*(1-cost_down/100):,.0f}")
 
     with col_e:
-        st.markdown("**Expected Case**")
-        st.write(f"Revenue: R{base_revenue:,.0f}")
-        st.write(f"Costs:   R{base_costs:,.0f}")
-        st.write(f"Profit:  R{base_revenue - base_costs:,.0f}")
+        st.markdown("**Expected**")
+        st.write(f"Profit: R{base_rev - base_cost:,.0f}")
 
     with col_w:
         st.markdown("**Worst Case**")
-        rev_drop = st.slider("Revenue -%", min_value=0, max_value=100, value=30, key="rev_down")
-        cost_up = st.slider("Cost +%", min_value=0, max_value=100, value=20, key="cost_up")
-        rev_worst = base_revenue * (1 - rev_drop/100)
-        cost_worst = base_costs * (1 + cost_up/100)
-        st.write(f"Profit: R{rev_worst - cost_worst:,.0f}")
-
-    st.caption("Later you could replace this with a Monte Carlo module that randomly samples many such scenarios.")
+        rev_down = st.slider("Revenue -%", 0, 100, 30)
+        cost_up = st.slider("Cost +%", 0, 100, 20)
+        st.write(f"Profit: R{base_rev*(1-rev_down/100) - base_cost*(1+cost_up/100):,.0f}")
 
 
 # ---------- TAB 8: Adjusted Revenue ----------
 with tabs[7]:
-    st.subheader("8. Adjusted Revenue – Beyond Simple Sales")
+    st.subheader("8. Adjusted Revenue")
 
     st.markdown("""
-    For climate, energy, and impact projects, **revenue is more than just sales**.
-
-    Adjusted revenue can include:
-    - Direct product/service revenue  
-    - Energy or cost savings  
-    - Carbon credit revenue  
-    - Licensing income  
-    - Other externalities you can monetise
+    Adjusted revenue includes external impact value:
+    - Energy savings  
+    - Carbon credits  
+    - Licensing  
+    - Other monetisable impact  
     """)
 
-    col1, col2, col3, col4, col5 = st.columns(5)
+    col1, col2, col3, col4 = st.columns(4)
+
     with col1:
-        direct_rev = st.number_input("Direct revenue (R/yr)", min_value=0.0, value=1000000.0, step=50000.0)
+        d = st.number_input("Direct revenue (R/yr)", 0.0, 1_000_000.0)
     with col2:
-        savings = st.number_input("Energy / cost savings (R/yr)", min_value=0.0, value=150000.0, step=20000.0)
+        s = st.number_input("Savings (R/yr)", 0.0, 150_000.0)
     with col3:
-        carbon_rev = st.number_input("Carbon credits (R/yr)", min_value=0.0, value=100000.0, step=10000.0)
+        c = st.number_input("Carbon credits (R/yr)", 0.0, 100_000.0)
     with col4:
-        licensing_rev = st.number_input("Licensing (R/yr)", min_value=0.0, value=80000.0, step=10000.0)
-    with col5:
-        other_rev = st.number_input("Other monetisable impacts (R/yr)", min_value=0.0, value=0.0, step=10000.0)
+        l = st.number_input("Licensing (R/yr)", 0.0, 80_000.0)
 
-    adjusted_revenue = direct_rev + savings + carbon_rev + licensing_rev + other_rev
-
-    st.write(f"**Adjusted annual revenue:** R{adjusted_revenue:,.0f}")
-    st.caption("This concept ties nicely into your climate/impact lens and can feed into your DCF/NPV modules.")
+    adjusted = d + s + c + l
+    st.write(f"**Adjusted Revenue: R{adjusted:,.0f}**")
 
 
 # ---------- TAB 9: Financial Story ----------
 with tabs[8]:
     st.subheader("9. Your 5-Sentence Financial Story")
 
-    st.markdown("Fill in a few fields and the app composes a concise financial story for pitches or funding applications.")
-
     col1, col2 = st.columns(2)
     with col1:
-        problem_cost = st.text_input("What costly problem do you solve?", "High energy bills for small manufacturers.")
-        value_delivered = st.text_input("What is the main financial value?", "We cut energy costs by 20–30%.")
-        pricing_model = st.text_input("How do you charge?", "Monthly subscription plus once-off setup fee.")
+        p = st.text_input("Problem cost?", "High energy bills for small factories.")
+        v = st.text_input("Value delivered?", "We reduce energy spend by 20–30%.")
+        pr = st.text_input("Pricing model?", "Monthly subscription + setup fee.")
     with col2:
-        margin_logic = st.text_input("Why are your margins sustainable?", "Cloud-based system with low variable costs.")
-        funding_need = st.text_input("What does funding unlock?", "Scale to 50 customers and integrate carbon credit revenue.")
+        m = st.text_input("Margin logic?", "Low variable cost, cloud-based.")
+        f = st.text_input("Funding unlocks?", "Scale to 50 clients + carbon revenue.")
 
-    if st.button("Generate Financial Story"):
-        st.markdown("### Draft Financial Story")
-        st.write(f"1. Our customers face the problem of **{problem_cost}**.")
-        st.write(f"2. Our solution delivers financial value by **{value_delivered}**.")
-        st.write(f"3. We generate revenue through **{pricing_model}**.")
-        st.write(f"4. Our cost structure and margins are sustainable because **{margin_logic}**.")
-        st.write(f"5. The funding we seek will **{funding_need}**, making the business financially and commercially robust.")
-
-
-# ---------- TAB 10: Learning Scenarios (TRL → Finance) ----------
-with tabs[9]:
-    st.subheader("10. Learning Scenarios – From TRL to Finance")
-
-    st.markdown("""
-    This tab is for **teaching scenarios** that link your other app modules:
-    - TRL Assessment  
-    - Business Models  
-    - IP & Licensing  
-    - Financials & Risk  
-
-    You can later connect this to real project data in your app.
-    """)
-
-    scenario = st.selectbox(
-        "Choose a teaching scenario",
-        [
-            "Scenario 1: TRL 3 Lab Prototype",
-            "Scenario 2: TRL 6 Field Pilot",
-            "Scenario 3: TRL 8 Market-Ready Product"
-        ],
-    )
-
-    if scenario == "Scenario 1: TRL 3 Lab Prototype":
-        st.markdown("""
-        **Scenario 1: TRL 3 – Lab Prototype**
-
-        - **TRL Module:** Early-stage, high technical uncertainty, no revenue yet.  
-        - **Business Model Module:** Still exploring options, use the business model selector to test patterns.  
-        - **IP Module:** Focus on disclosures, prior art search, basic protection strategy.  
-        - **Financial Focus:**  
-          - Cost tracking (R&D, lab time, equipment)  
-          - Very rough DCF set up for learning, not decision-making  
-          - Simple scorecard valuation, not full NPV  
-        - **Teaching Point:** At TRL 3, finance is about **cost discipline and future framing**, not detailed forecasting.
-        """)
-
-    elif scenario == "Scenario 2: TRL 6 Field Pilot":
-        st.markdown("""
-        **Scenario 2: TRL 6 – Field Pilot**
-
-        - **TRL Module:** Real-world testing with pilot customers.  
-        - **Business Model Module:** Narrow down to 1–2 realistic models (e.g. SaaS + hardware).  
-        - **IP Module:** Filing decisions (patents/designs), early licensing conversations.  
-        - **Financial Focus:**  
-          - Use pilot data to estimate **realistic revenues and costs**  
-          - Build first meaningful **NPV and IRR** models  
-          - Introduce **scenario analysis** (best/expected/worst)  
-        - **Teaching Point:** At TRL 6, finance becomes **evidence-based**. Numbers reflect data, not only assumptions.
-        """)
-
-    else:
-        st.markdown("""
-        **Scenario 3: TRL 8 – Market-Ready Product**
-
-        - **TRL Module:** Near or at commercial launch.  
-        - **Business Model Module:** Locked in, pricing tested with customers.  
-        - **IP Module:** Protection in place, consider licensing opportunities and geographic expansion.  
-        - **Financial Focus:**  
-          - Full **DCF/NPV/IRR** for investors and funders  
-          - Detailed **cash flow** and **runway planning**  
-          - **Adjusted revenue** including savings, carbon, and licensing  
-        - **Teaching Point:** At TRL 8, finance is about **scaling and investor readiness** – your story, numbers, and risk view must align.
-        """)
-
-    st.caption("Later, you can wire this tab to real project records in your app so learners can explore actual anonymised cases end-to-end.")
-
+    if st.button("Generate Story"):
+        st.markdown("### Financial Story")
+        st.write(f"1. Customers face the costly problem of **{p}**.")
+        st.write(f"2. Our solution delivers value by **{v}**.")
+        st.write(f"3. We generate revenue through **{pr}**.")
+        st.write(f"4. Our margins are sustainable because **{m}**.")
+        st.write(f"5. Funding will **{f}**, making the business commercially strong.")

@@ -1,205 +1,154 @@
 import streamlit as st
 import json
+import os
 
-# -------------------------------------------------------------------
-# Load Data
-# -------------------------------------------------------------------
-with open("data/business_models.json", "r") as f:
+st.title("Business Model Explorer")
+
+# ---------------------------------------------------
+# Load JSON
+# ---------------------------------------------------
+DATA_PATH = "data/business_models.json"
+
+if not os.path.exists(DATA_PATH):
+    st.error("❌ Could not find business_models.json in /data")
+    st.stop()
+
+with open(DATA_PATH, "r") as f:
     BUSINESS_MODELS = json.load(f)
 
-with open("data/archetype_tags.json", "r") as f:
-    ARCHETYPES = json.load(f)
 
-# Weight map for scoring
-MATURITY_MAP = {"emerging": 0.3, "established": 0.6, "dominant": 1.0}
-
-# -------------------------------------------------------------------
-# Helper: Tag Chip
-# -------------------------------------------------------------------
+# ---------------------------------------------------
+# Helper functions
+# ---------------------------------------------------
 def tag_chip(tag):
-    """Return an HTML tag chip with colour coding."""
-    colour_map = {
-        "AI": "#E3F2FD",
-        "software": "#FFF3E0",
-        "platform": "#E8EAF6",
-        "impact": "#E8F5E9",
-        "green": "#E8F5E9",
-        "B2B": "#E1F5FE",
-        "B2C": "#FCE4EC",
+    """Return a styled tag bubble."""
+    colors = {
+        "software": "#E8EAF6",
+        "platform": "#E1F5FE",
         "digital": "#F3E5F5",
-        "research": "#E0F7FA",
+        "AI": "#E8F5E9",
+        "green": "#E0F2F1",
     }
-    bg = colour_map.get(tag, "#EFEFEF")
-
+    bg = colors.get(tag, "#EFEFEF")
     return f"""
-        <span style="
-            background:{bg};
-            padding:6px 10px;
-            border-radius:8px;
-            margin-right:6px;
-            font-size:0.8em;
-            display:inline-block;
-        ">{tag}</span>
+    <span style="
+        background:{bg};
+        padding:6px 10px;
+        border-radius:8px;
+        margin-right:6px;
+        font-size:0.8em;
+        display:inline-block;
+    ">{tag}</span>
     """
 
-# -------------------------------------------------------------------
-# Helper: Score Function
-# -------------------------------------------------------------------
-def score_model(model, archetype_tags):
-    overlap = len(set(model["tags"]) & set(archetype_tags))
-    tag_score = overlap / max(len(model["tags"]), 1)
 
-    maturity_score = MATURITY_MAP.get(model.get("maturity_level", "established"), 0.6)
-    base_success = model.get("success_score", 0.6)
-
-    return (0.5 * tag_score) + (0.3 * base_success) + (0.2 * maturity_score)
-
-# -------------------------------------------------------------------
-# Helper: Render a Bullet List
-# -------------------------------------------------------------------
 def bullet_list(items):
     if not items:
-        return "<div></div>"
+        return "<p style='color:#777;'>None listed</p>"
+    html = "<ul style='margin-top:6px;margin-bottom:12px;padding-left:20px;'>"
+    for it in items:
+        html += f"<li style='margin-bottom:4px;'>{it}</li>"
+    html += "</ul>"
+    return html
 
-    items_html = "".join(f"<li style='margin-bottom:4px;'>{i}</li>" for i in items)
-    return f"<ul style='margin-top:6px;margin-bottom:12px;padding-left:20px;'>{items_html}</ul>"
 
-# -------------------------------------------------------------------
-# Helper: Business Model Tile
-# -------------------------------------------------------------------
 def render_bm_tile(bm):
+    """Return full HTML card for one business model."""
     name = bm["name"]
     desc = bm["description"]
+
     tags_html = " ".join(tag_chip(t) for t in bm['tags'])
 
     difficulty = bm.get("difficulty", "-")
     capex = bm.get("capital_requirement", "-")
     ttr = bm.get("time_to_revenue", "-")
 
-    # extra educational fields
     rev = bm.get("revenue_streams", [])
     use = bm.get("use_cases", [])
-    ex = bm.get("examples", [])
+    examples = bm.get("examples", [])
     risks = bm.get("risks", [])
 
     return f"""
+<div style="
+    background:#ffffff;
+    border-radius:12px;
+    padding:18px;
+    border:1px solid #e5e5e5;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+    margin-bottom:20px;
+">
+
+    <h3 style="margin-bottom:4px;">{name}</h3>
+    <span style="color:#888;font-size:0.85em;">{bm['id']}</span>
+
+    <p style="margin-top:12px;color:#444;">{desc}</p>
+
+    <div style="margin:12px 0;">{tags_html}</div>
+
     <div style="
-        background:#ffffff;
-        border-radius:12px;
-        padding:18px;
-        border:1px solid #e5e5e5;
-        box-shadow:0 2px 8px rgba(0,0,0,0.06);
-        margin-bottom:20px;
+        display:flex;
+        justify-content:space-between;
+        font-size:0.8em;
+        color:#444;
+        margin-top:10px;
     ">
-
-        <h3 style="margin-bottom:4px;">{name}</h3>
-        <span style="color:#888;font-size:0.85em;">{bm['id']}</span>
-
-        <p style="margin-top:12px;color:#444;">
-            {desc}
-        </p>
-
-        <div style="margin:12px 0;">
-            {tags_html}
-        </div>
-
-        <div style="
-            display:flex;
-            justify-content:space-between;
-            font-size:0.8em;
-            color:#444;
-            margin-top:10px;
-        ">
-            <div><strong>Difficulty:</strong> {difficulty}/5</div>
-            <div><strong>Capex:</strong> {capex}</div>
-        </div>
-
-        <div style="
-            font-size:0.8em;
-            color:#444;
-            margin-top:4px;
-        ">
-            <strong>Time to Revenue:</strong> {ttr}
-        </div>
-
-        <hr style="margin:14px 0;">
-
-        <div style="margin-top:8px;">
-            <strong>Revenue Streams</strong>
-            {bullet_list(rev)}
-        </div>
-
-        <div style="margin-top:8px;">
-            <strong>Use Cases</strong>
-            {bullet_list(use)}
-        </div>
-
-        <div style="margin-top:8px;">
-            <strong>Example Companies</strong>
-            {bullet_list(ex)}
-        </div>
-
-        <div style="margin-top:8px;">
-            <strong>Risks</strong>
-            {bullet_list(risks)}
-        </div>
-
+        <div><strong>Difficulty:</strong> {difficulty}/5</div>
+        <div><strong>Capex:</strong> {capex}</div>
     </div>
-    """
 
-# -------------------------------------------------------------------
-# Streamlit UI
-# -------------------------------------------------------------------
-st.title("Business Models — Education & Recommendation")
+    <div style="font-size:0.8em;color:#444;margin-top:4px;">
+        <strong>Time to Revenue:</strong> {ttr}
+    </div>
 
-if "archetype_selected" not in st.session_state:
-    st.session_state["archetype_selected"] = False
+    <hr style="margin:14px 0;">
 
-# -------------------------------------------------------------------
-# Step 1 — Archetype Selection
-# -------------------------------------------------------------------
-st.subheader("1. Choose Your Innovator Archetype")
+    <div style="margin-top:8px;">
+        <strong>Revenue Streams</strong>
+        {bullet_list(rev)}
+    </div>
 
-if not st.session_state["archetype_selected"]:
-    archetype_choice = st.radio(
-        "Select your innovator profile:",
-        list(ARCHETYPES.keys())
-    )
+    <div style="margin-top:8px;">
+        <strong>Use Cases</strong>
+        {bullet_list(use)}
+    </div>
 
-    if st.button("Continue"):
-        st.session_state["archetype"] = archetype_choice
-        st.session_state["archetype_selected"] = True
-        st.rerun()
+    <div style="margin-top:8px;">
+        <strong>Example Companies</strong>
+        {bullet_list(examples)}
+    </div>
 
-else:
-    archetype = st.session_state["archetype"]
-    st.success(f"Archetype selected: **{archetype}**")
-    archetype_tags = ARCHETYPES[archetype]
+    <div style="margin-top:8px;">
+        <strong>Risks</strong>
+        {bullet_list(risks)}
+    </div>
 
-# -------------------------------------------------------------------
-# Step 2 — Top 5 Recommendations
-# -------------------------------------------------------------------
-if st.session_state["archetype_selected"]:
-    st.subheader("2. Recommended Business Models (Top 5)")
+</div>
+"""
 
-    scored = [
-        (bm, score_model(bm, archetype_tags))
-        for bm in BUSINESS_MODELS
-    ]
 
-    scored = sorted(scored, key=lambda x: x[1], reverse=True)
-    top5 = scored[:5]
+# ---------------------------------------------------
+# Archetype Selection
+# ---------------------------------------------------
+st.subheader("Choose your Innovator Archetype")
 
-    for bm, score in top5:
-        st.markdown(render_bm_tile(bm), unsafe_allow_html=True)
+archetypes = [
+    "Tech Builder",
+    "Ecosystem Architect",
+    "Impact Innovator",
+    "Commercial Strategist",
+    "Creative Entrepreneur"
+]
 
-# -------------------------------------------------------------------
-# Step 3 — Explore All Models
-# -------------------------------------------------------------------
-st.subheader("3. Explore All 70 Business Models")
+archetype = st.selectbox("Select your profile:", archetypes)
 
-with st.expander("Open full list"):
-    for bm in BUSINESS_MODELS:
-        st.markdown(render_bm_tile(bm), unsafe_allow_html=True)
+st.markdown("---")
+st.subheader(f"Business Models for: **{archetype}**")
+
+
+# ---------------------------------------------------
+# Render All Cards
+# ---------------------------------------------------
+for bm in BUSINESS_MODELS:
+    st.html(render_bm_tile(bm))
 
 

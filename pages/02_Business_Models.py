@@ -2,7 +2,7 @@ import streamlit as st
 import json
 
 # -------------------------------------------------------
-# LOAD BUSINESS MODELS JSON
+# LOAD CLEAN JSON (TEXT ONLY, NO HTML)
 # -------------------------------------------------------
 with open("data/business_models.json", "r") as f:
     BUSINESS_MODELS = json.load(f)
@@ -19,12 +19,11 @@ ARCHETYPES = {
 }
 
 # -------------------------------------------------------
-# CUSTOM CSS
+# CSS STYLES
 # -------------------------------------------------------
 st.markdown("""
 <style>
 
-/* --- Card container --- */
 .business-card {
     background: #ffffff;
     border-radius: 14px;
@@ -39,22 +38,18 @@ st.markdown("""
     transform: translateY(-3px);
 }
 
-/* --- Title --- */
 .business-title {
     font-size: 1.25rem;
     font-weight: 600;
     color: #111;
     margin-bottom: 4px;
 }
-
-/* --- ID --- */
 .business-id {
     color: #777;
     font-size: 0.85rem;
     margin-bottom: 10px;
 }
 
-/* --- Tag chips --- */
 .tag-chip {
     background: #e8f0fe;
     color: #1a237e;
@@ -66,7 +61,6 @@ st.markdown("""
     font-size: 0.75rem;
 }
 
-/* --- Metrics row --- */
 .metric-row {
     display: flex;
     justify-content: space-between;
@@ -75,7 +69,6 @@ st.markdown("""
     color: #333;
 }
 
-/* --- Section titles --- */
 .section-label {
     font-weight: 600;
     color: #111;
@@ -93,52 +86,47 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # -------------------------------------------------------
-# PAGE TITLE
+# TITLE
 # -------------------------------------------------------
 st.title("Business Model Navigator")
-st.write("Select an archetype or search through all 70 models.")
 
-# -------------------------------------------------------
-# SEARCH BAR
-# -------------------------------------------------------
 search_term = st.text_input("Search business models", "")
 
-# -------------------------------------------------------
-# ARCHETYPE SELECTION
-# -------------------------------------------------------
 selected_arch = st.selectbox("Choose an archetype", ["-- Select --"] + list(ARCHETYPES.keys()))
 
-filtered_models = BUSINESS_MODELS
+filtered = BUSINESS_MODELS
 
-# Apply archetype filter
+# ARCHETYPE FILTER
 if selected_arch != "-- Select --":
-    selected_tags = ARCHETYPES[selected_arch]
-    filtered_models = [bm for bm in BUSINESS_MODELS if any(t in bm["tags"] for t in selected_tags)]
+    t = ARCHETYPES[selected_arch]
+    filtered = [b for b in filtered if any(tag in b["tags"] for tag in t)]
 
-# Apply search filter
+# SEARCH FILTER
 if search_term.strip():
-    term = search_term.lower()
-    filtered_models = [
-        bm for bm in filtered_models
-        if term in bm["name"].lower()
-        or term in bm["description"].lower()
-        or any(term in t.lower() for t in bm["tags"])
+    s = search_term.lower()
+    filtered = [
+        b for b in filtered
+        if s in b["name"].lower()
+        or s in b["description"].lower()
+        or any(s in t.lower() for t in b["tags"])
     ]
 
 # -------------------------------------------------------
-# BUSINESS MODEL CARD RENDERER
+# SAFE HTML CARD RENDERER (NO HTML FROM JSON)
 # -------------------------------------------------------
-def render_model_card(bm):
-    tag_html = "".join([f"<span class='tag-chip'>{tag}</span>" for tag in bm["tags"]])
+def render_card(bm):
+    # tag chips
+    tags_html = "".join(f"<span class='tag-chip'>{t}</span>" for t in bm["tags"])
 
-    card_html = f"""
+    # build the HTML card — ALL HTML generated here (safe)
+    html = f"""
     <div class="business-card">
         <div class="business-title">{bm['name']}</div>
         <div class="business-id">{bm['id']}</div>
 
         <p style="color:#444; margin-bottom:10px;">{bm['description']}</p>
 
-        <div>{tag_html}</div>
+        <div>{tags_html}</div>
 
         <div class="metric-row">
             <div><strong>Difficulty:</strong> {bm['difficulty']} / 5</div>
@@ -146,34 +134,35 @@ def render_model_card(bm):
         </div>
 
         <div class="desc-text"><strong>Time to Revenue:</strong> {bm['time_to_revenue']}</div>
+    </div>
     """
 
-    # Expandable sections
-    card_html += "</div>"  # close initial card
+    # render card
+    st.markdown(html, unsafe_allow_html=True)
 
-    st.markdown(card_html, unsafe_allow_html=True)
-
+    # expanders
     with st.expander("Revenue Streams"):
-        for item in bm["revenue_streams"]:
-            st.write("- " + item)
+        for i in bm["revenue_streams"]:
+            st.write("- " + i)
 
     with st.expander("Use Cases"):
-        for item in bm["use_cases"]:
-            st.write("- " + item)
+        for i in bm["use_cases"]:
+            st.write("- " + i)
 
-    with st.expander("Example Companies"):
-        for item in bm["examples"]:
-            st.write("- " + item)
+    with st.expander("Examples"):
+        for i in bm["examples"]:
+            st.write("- " + i)
 
     with st.expander("Risks"):
-        for item in bm["risks"]:
-            st.write("- " + item)
+        for i in bm["risks"]:
+            st.write("- " + i)
 
 
 # -------------------------------------------------------
 # DISPLAY MODELS
 # -------------------------------------------------------
-st.subheader(f"{len(filtered_models)} business models found")
+st.subheader(f"{len(filtered)} business models found")
 
-for bm in filtered_models:
-    render_model_card(bm)
+for model in filtered:
+    render_card(model)
+

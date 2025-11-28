@@ -6,8 +6,8 @@ st.set_page_config(page_title="Business Models", layout="wide")
 
 st.title("Business Model Selector — Education View")
 st.write(
-    "Pick an innovator archetype, and we’ll show the top 5 fitting business models "
-    "with teaching-ready detail."
+    "Pick an innovator archetype to see the top-fitting business models. "
+    "You can also search or browse the full library of 70 models."
 )
 
 # -----------------------------
@@ -16,109 +16,110 @@ st.write(
 BM_PATH = "data/business_models.json"
 ARCH_PATH = "data/archetype_tags.json"
 
-if not os.path.exists(BM_PATH):
-    st.error(f"Could not find {BM_PATH}")
-    st.stop()
-
 with open(BM_PATH, "r", encoding="utf-8") as f:
     BUSINESS_MODELS = json.load(f)
-
-if not os.path.exists(ARCH_PATH):
-    st.error(f"Could not find {ARCH_PATH} (archetype tags).")
-    st.stop()
 
 with open(ARCH_PATH, "r", encoding="utf-8") as f:
     ARCHETYPE_TAGS = json.load(f)
 
 
 # -----------------------------
-# Simple scoring: tag overlap only
+# Scoring (simple overlap)
 # -----------------------------
-def score_for_archetype(bm, archetype_tags):
-    """Simple score = number of overlapping tags with the archetype."""
-    return len(set(bm.get("tags", [])) & set(archetype_tags))
+def score_for_archetype(bm, tags):
+    return len(set(bm.get("tags", [])) & set(tags))
 
 
 # -----------------------------
-# Pretty bullet list helper
+# Tile Renderer (no HTML)
 # -----------------------------
-def render_list(title, items):
-    if not items:
-        st.markdown(f"**{title}:** —")
-        return
-    st.markdown(f"**{title}:**")
-    for item in items:
-        st.markdown(f"- {item}")
+def render_tile(bm):
+    st.subheader(f"{bm['name']}  — `{bm['id']}`")
+    st.markdown(bm.get("description", ""))
+
+    # Tags row
+    tags = bm.get("tags", [])
+    if tags:
+        st.markdown("**Tags:** " + ", ".join(f"`{t}`" for t in tags))
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown(f"**Difficulty:** {bm.get('difficulty', '-')} / 5")
+    with col2:
+        st.markdown(f"**Capex:** {bm.get('capital_requirement', '-')}")
+    with col3:
+        st.markdown(f"**Time to Revenue:** {bm.get('time_to_revenue', '-')}")
+
+    # Lists
+    def bullet_list(title, items):
+        st.markdown(f"**{title}:**")
+        for it in items:
+            st.markdown(f"- {it}")
+
+    bullet_list("Revenue Streams", bm.get("revenue_streams", []))
+    bullet_list("Use Cases", bm.get("use_cases", []))
+    bullet_list("Examples", bm.get("examples", []))
+    bullet_list("Risks", bm.get("risks", []))
+
+    st.markdown("---")
 
 
 # -----------------------------
-# UI Step 1: Choose archetype
+# UI — Archetype
 # -----------------------------
 st.markdown("### 1. Choose your innovator archetype")
 
-archetype_names = list(ARCHETYPE_TAGS.keys())
-selected_arch = st.radio(
-    "Select the profile that best matches you:",
-    archetype_names,
-    index=0,
-)
+archetypes = list(ARCHETYPE_TAGS.keys())
+selected_arch = st.radio("Select your archetype:", archetypes)
+arch_tags = ARCHETYPE_TAGS[selected_arch]
 
-archetype_tags = ARCHETYPE_TAGS[selected_arch]
-
-st.info(f"You selected **{selected_arch}**. Matching tags: {', '.join(archetype_tags)}")
+st.info(f"You selected **{selected_arch}** — matching tags: {', '.join(arch_tags)}")
 
 # -----------------------------
-# Button: generate top 5
+# Generate Top 5
 # -----------------------------
-if st.button("Generate Top 5 Business Models"):
-    # Score and rank
-    scored = []
-    for bm in BUSINESS_MODELS:
-        s = score_for_archetype(bm, archetype_tags)
-        scored.append((s, bm))
+generate = st.button("Generate Top 5 Business Models")
 
-    # Sort by score (highest first), then by name for stability
-    scored.sort(key=lambda x: (-x[0], x[1]["name"]))
+top5_models = []
+if generate:
+    scored = [(score_for_archetype(bm, arch_tags), bm) for bm in BUSINESS_MODELS]
+    scored.sort(key=lambda x: (-x[0], x[1]['name']))
 
-    # Take top 5 with some overlap; if no scores > 0, just fallback to first 5
-    top5 = [bm for s, bm in scored if s > 0][:5]
-    if not top5:
-        top5 = [bm for _, bm in scored[:5]]
+    # Top 5 with some overlap
+    top5_models = [bm for score, bm in scored if score > 0][:5]
+    if not top5_models:
+        top5_models = [bm for score, bm in scored[:5]]
 
     st.markdown("### 2. Recommended Top 5 Models")
-    st.caption("These are ranked by how many strategic tags they share with your archetype.")
+    for bm in top5_models:
+        render_tile(bm)
 
-    for idx, bm in enumerate(top5, start=1):
-        with st.container():
-            st.markdown(f"#### {idx}. {bm['name']}  \n`{bm['id']}`")
-            st.markdown(bm.get("description", ""))
 
-            # Tags row
-            tags = bm.get("tags", [])
-            if tags:
-                st.markdown(
-                    "**Tags:** " + ", ".join(f"`{t}`" for t in tags)
-                )
+# -----------------------------
+# Search + Show All Models
+# -----------------------------
+st.markdown("### 3. Explore All Business Models")
 
-            # Quick stats row
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.markdown(f"**Difficulty:** {bm.get('difficulty', '-')} / 5")
-            with col2:
-                st.markdown(f"**Capex:** {bm.get('capital_requirement', '-')}")
-            with col3:
-                st.markdown(f"**Time to revenue:** {bm.get('time_to_revenue', '-')}")
+with st.expander("Search & Browse All Models"):
+    search_query = st.text_input("Search by name or tag:")
+    show_all = st.checkbox("Show all business models", value=False)
 
-            # Teaching sections
-            render_list("Revenue streams", bm.get("revenue_streams", []))
-            render_list("Use cases", bm.get("use_cases", []))
-            render_list("Examples", bm.get("examples", []))
-            render_list("Risks", bm.get("risks", []))
+    filtered_models = BUSINESS_MODELS
 
-            st.markdown("---")
-else:
-    st.markdown("### 2. Recommended Top 5 Models")
-    st.caption("Click **Generate Top 5 Business Models** to see your personalised suggestions.")
+    # Apply search filter
+    if search_query:
+        q = search_query.lower()
+        def matches(bm):
+            name_match = q in bm['name'].lower()
+            desc_match = q in bm.get("description", "").lower()
+            tag_match = any(q in t.lower() for t in bm.get("tags", []))
+            return name_match or desc_match or tag_match
+        filtered_models = [bm for bm in BUSINESS_MODELS if matches(bm)]
+
+    if show_all or search_query:
+        st.markdown(f"**{len(filtered_models)} models found**")
+        for bm in filtered_models:
+            render_tile(bm)
 
 
 

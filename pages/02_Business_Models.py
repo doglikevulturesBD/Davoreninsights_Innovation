@@ -4,7 +4,7 @@ import json
 # -------------------------------
 # Load Data
 # -------------------------------
-with open("data/business_models_v2.json", "r") as f:
+with open("data/business_models.json", "r") as f:
     BUSINESS_MODELS = json.load(f)
 
 with open("data/archetype_tags.json", "r") as f:

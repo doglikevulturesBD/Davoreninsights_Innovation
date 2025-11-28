@@ -6,7 +6,7 @@ st.title("📘 Business Models Education Explorer")
 # ---------------------------------------
 # Load Data
 # ---------------------------------------
-with open("data/business_models_v2.json", "r") as f:
+with open("data/business_models.json", "r") as f:
     BUSINESS_MODELS = json.load(f)
 
 # ---------------------------------------
